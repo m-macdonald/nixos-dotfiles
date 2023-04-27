@@ -1,6 +1,6 @@
 {  config, lib, pkgs, ... }: 
 {
-  home .packages = with pkgs; [zsh];
+  home.packages = with pkgs; [zsh];
 
   home.file = {
     ".zshrc" = {
@@ -17,12 +17,15 @@
 
   };
 
+/*
   programs.git = {
     enable = true;
     userName = "m-macdonald";
-    userEmail = "maddux.macdonald@gmail.com";
+    package = pkgs.gitFull;
     extraConfig = {
       init = {defaultBranch = "main";};
+      credential.helper = "libsecret";
     };
   };
+*/
 }
