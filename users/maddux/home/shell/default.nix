@@ -2,11 +2,7 @@
 {
   home.packages = with pkgs; [zsh];
 
-  home.file = {
-    ".zshrc" = {
-      source = ./.zshrc;
-    };
-  };
+  home.file.".zshrc".source = ./.zshrc;
 
   programs.zsh = {
     enableCompletion = true;
@@ -14,9 +10,16 @@
     sessionVariables = {
       EDITOR = "nvim";
     };
-
   };
 
+/*
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    extraConfig = config.lib.file.mkOutOfStoreSymlink "./config";
+  };
+*/
 /*
   programs.git = {
     enable = true;

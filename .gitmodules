@@ -1,0 +1,3 @@
+[submodule "users/maddux/nvim/config"]
+	path = users/maddux/home/neovim/config
+	url = https://github.com/m-macdonald/nvim-config.git

@@ -66,8 +66,6 @@
         pkgs = pkgs;
 	modules = [
           ./system/configuration.nix
-#	  inputs.hyprland.nixosModules.default
-#	  {programs.hyprland.enable = true; }
 	];
       };
     };
