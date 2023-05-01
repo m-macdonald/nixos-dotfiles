@@ -8,7 +8,7 @@ in {
     programs.git = {
       enable = true;
       userName = "m-macdonald";
-      userEmail = "";
+      userEmail = "maddux.macdonald@gmail.com";
       extraConfig = {
         init = { defaultBranch = "main"; };
       };
