@@ -1,14 +1,26 @@
-{ pkgs, lib, config, inputs, ... }: 
-with lib; let
+{ lib, config, pkgs, inputs, ... }: 
+with lib;
+let cfg = config.modules.hyprland;
 in {
-  imports = [
-    inputs.hyprland.homeManagerModules.default
-    {wayland.windowManager.hyprland = {
+  options.modules.hyprland = { enable = mkEnableOption "hyprland"; };
+
+  config = mkIf cfg.enable {
+    /*
+    programs.hyprland = {
       enable = true;
       nvidiaPatches = true;
       extraConfig = builtins.readFile ./hyprland.conf;
-    };}
-  ];
-
-
+    }; 
+    */ 
+    /*
+    modules = [
+      inputs.hyprland.homeManagerModules.default
+      {wayland.windowManager.hyprland = {
+        enable = true;
+        nvidiaPatches = true;
+        extraConfig = builtins.readFile ./hyprland.conf;
+      };}
+    ];
+    */
+  };
 }

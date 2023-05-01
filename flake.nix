@@ -4,8 +4,10 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-22.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-22.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland.url = "github:hyprwm/Hyprland/";
 #    xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
@@ -16,10 +18,12 @@
   let
     system = "x86_64-linux";
 
+    /*
     pkgs-unstable = import nixpkgs-unstable {
       inherit system;
       config = { allowUnfree = true; };
     };
+    */
 
     pkgs = import nixpkgs {
       inherit system;
@@ -38,36 +42,33 @@
     
     lib = nixpkgs.lib;
 
-  in {
+    mkSystem = pkgs: system: hostname:
+      nixpkgs.lib.nixosSystem {
+        system = system;
 
-    services = {
-      pipewire = {
-        enable = true;
-	pulse.enable = true;
-      };
-    };
-
-    sound.enable = true;
-    hardware.pulseaudio.enable = true;
-
-    homeConfigurations = {
-      maddux = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgs;
-	extraSpecialArgs = { inherit inputs; };
         modules = [
-          ./users/maddux/home.nix
-	];
-      };
-    };
+          { networking.hostName = hostname; }
 
-    nixosConfigurations = {
-      nixtop = lib.nixosSystem {
-        inherit system;
-        pkgs = pkgs;
-	modules = [
-          ./system/configuration.nix
-	];
+#          ./modules/system/configuration.nix
+          (./. + "/hosts/${hostname}/system-configuration.nix")
+
+          (./. + "/hosts/${hostname}/hardware-configuration.nix")
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit inputs; inherit pkgs; };
+              users.maddux = (./. + "/hosts/${hostname}/users.nix");
+            };
+          }
+        ];
+        specialArgs = { inherit inputs; inherit pkgs; };
       };
+
+  in { 
+    nixosConfigurations = {
+      nixtop = mkSystem pkgs "x86_64-linux" "desktop";
     };
   };
 }

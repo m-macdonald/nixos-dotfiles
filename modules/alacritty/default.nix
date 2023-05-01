@@ -1,10 +1,11 @@
-{ pkgs, lib, config, ... }: 
+{ lib, config, pkgs, ... }: 
 with lib;
 with builtins;
-let
+let cfg = config.modules.alacritty;
 in {
+  options.modules.alacritty = { enable = mkEnableOption "alacritty"; };
 
-  config = {
+  config = mkIf cfg.enable {
     home = { 
       sessionVariables = {
         TERM = "${pkgs.alacritty}/bin/alacritty";
@@ -13,7 +14,5 @@ in {
         alacritty
       ];
     };
-
-    xdg.configFile."zsh/.zshrc".source = ./.zshrc;
   };
 }
