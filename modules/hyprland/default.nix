@@ -5,22 +5,10 @@ in {
   options.modules.hyprland = { enable = mkEnableOption "hyprland"; };
 
   config = mkIf cfg.enable {
-    /*
     programs.hyprland = {
       enable = true;
       nvidiaPatches = true;
       extraConfig = builtins.readFile ./hyprland.conf;
     }; 
-    */ 
-    /*
-    modules = [
-      inputs.hyprland.homeManagerModules.default
-      {wayland.windowManager.hyprland = {
-        enable = true;
-        nvidiaPatches = true;
-        extraConfig = builtins.readFile ./hyprland.conf;
-      };}
-    ];
-    */
   };
 }

@@ -1,8 +1,8 @@
 { lib, config, pkgs, ... }:
 with lib;
-let cfg = config.modules.neovim;
+let cfg = config.modules.nvim;
 in {
-  options.modules.neovim = { enable = mkEnableOption "neovim"; };
+  options.modules.nvim = { enable = mkEnableOption "nvim"; };
   
   config = mkIf cfg.enable {
     programs.neovim = {
@@ -12,7 +12,7 @@ in {
     };
 
     home.file."nvim" = {
-      source = file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/modules/neovim/config";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/modules/nvim/config";
       target = ".config/nvim";
       recursive = true;
     };

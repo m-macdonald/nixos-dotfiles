@@ -5,16 +5,16 @@
 
   imports = [
     ./alacritty
-    ./neovim
+    ./nvim
     ./hyprland
     ./zsh
+    ./git
   ];
 
   home.packages = with pkgs; [
     spotify
     firefox
     rofi
-    git
     gcc
   ];
 }

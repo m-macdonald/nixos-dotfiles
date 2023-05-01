@@ -12,6 +12,6 @@ in {
       extraConfig = {
         init = { defaultBranch = "main"; };
       };
-    }:
+    };
   };
 }
