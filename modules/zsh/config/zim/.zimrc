@@ -1,0 +1,5 @@
+# Required by eriner
+zmodule prompt-pwd
+
+zmodule git-info
+zmodule eriner

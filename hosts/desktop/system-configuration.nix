@@ -115,7 +115,7 @@
     shell = pkgs.zsh;
     initialPassword = "changeme";
   };
-
+/*
   security = {
     sudo.enable = false;
     doas = {
@@ -127,7 +127,7 @@
       }];
     };
   };
-
+*/
   sound = {
     enable = true;
   };

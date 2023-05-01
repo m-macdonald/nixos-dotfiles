@@ -4,7 +4,7 @@ bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 bindkey "^[[3~" delete-char
 
-ZIM_HOME=$HOME/zsh/.zim
+ZIM_HOME=$HOME/.config/zsh/zim
 ZDOTDIR=$ZIM_HOME
 
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then

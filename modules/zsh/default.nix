@@ -5,12 +5,18 @@ in {
   options.modules.zsh = { enable = mkEnableOption "zsh"; };
 
   config = mkIf cfg.enable {
-    home.file.".zshrc"source = ./config/.zshrc;
+    # Sets .zshrc to my root home directory.
+    # TODO: Maybe find a way to move this into the .config/zsh folder?
+    home.file.".zshrc".source = ./config/.zshrc;
+
+    # Sets the config files for the zim plugin manager
     home.file."zim" = {
       source = ./config/zim;
-      target = .config/zsh/zim;
+      target = ".config/zsh/zim";
       recursive = true;
     };
+
+    # Additional zsh config
     programs.zsh = {
       enableCompletion = true;
       enableSyntaxHighlighting = true;
