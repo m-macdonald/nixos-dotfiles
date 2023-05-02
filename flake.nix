@@ -17,7 +17,7 @@
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs : 
   let
     system = "x86_64-linux";
-
+    volta-package = ./packages/volta.nix;
     /*
     pkgs-unstable = import nixpkgs-unstable {
       inherit system;
@@ -30,7 +30,7 @@
       config = { 
         allowUnfree = true;
       };
-      overlays = [ overlay-unstable /*inputs.nixpkgs-wayland.overlay*/ ];
+      overlays = [ overlay-unstable overlay-volta/*inputs.nixpkgs-wayland.overlay*/ ];
     };
 
     overlay-unstable = final: prev: {
@@ -38,6 +38,10 @@
         inherit system;
         config.allowUnfree = true;
       };
+    };
+
+    overlay-volta = final: prev: {
+        volta = prev.callPackage volta-package {};
     };
     
     lib = nixpkgs.lib;

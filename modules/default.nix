@@ -16,5 +16,8 @@
     firefox
     rofi
     gcc
+
+    # Utilities
+    unzipNLS
   ];
 }
