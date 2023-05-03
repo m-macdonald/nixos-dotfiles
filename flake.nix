@@ -10,7 +10,7 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland/";
-#    xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    xdg-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
 #    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
@@ -18,12 +18,6 @@
   let
     system = "x86_64-linux";
     volta-package = ./packages/volta.nix;
-    /*
-    pkgs-unstable = import nixpkgs-unstable {
-      inherit system;
-      config = { allowUnfree = true; };
-    };
-    */
 
     pkgs = import nixpkgs {
       inherit system;
@@ -42,6 +36,17 @@
 
     overlay-volta = final: prev: {
         volta = prev.callPackage volta-package {};
+    };
+
+    overlay-bitwarden = final: prev: {
+        bitwarden = prev.bitwarden.overridAttrs (old: rec {
+          name = "bitwarden";
+          version = "2023.4.0";
+          src = prev.fetchurl {
+            url = "https://github.com/bitwarden/clients/releases/download/desktop-v${version}/Bitwarden-${version}-amd64.deb";
+            sha256 = prev.lib.fakeSha256;
+          };
+        });
     };
     
     lib = nixpkgs.lib;

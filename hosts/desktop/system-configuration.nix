@@ -26,7 +26,8 @@
     ANKI_WAYLAND = "1";
     WLR_DRM_NO_ATOMIC = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_QPA_PLATFORM = "wayland";
+    # Setting this to x11 to fix flameshot issues
+    QT_QPA_PLATFORM = "x11";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     MOZ_ENABLE_WAYLAND = "1";
     WLR_BACKEND = "vulkan";
@@ -41,15 +42,15 @@
     portal = {
       enable = true;
       extraPortals = with pkgs; [
-        xdg-desktop-portal-wlr
-        xdg-desktop-portal-gtk
+#        xdg-desktop-portal-wlr
+        inputs.xdg-portal-hyprland
+ #       xdg-desktop-portal
       ];
-      gtkUsePortal = true;
     };
   };
 
   # NVIDIA CONFIG
-  # this can probably be moved to it's own module
+  # this can probably be moved to its own module
   services.xserver.videoDrivers = [ "nvidia" ];
 
   environment.systemPackages = with pkgs; [

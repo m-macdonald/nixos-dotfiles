@@ -16,8 +16,13 @@
     firefox
     rofi
     gcc
-
+    bitwarden
     # Utilities
     unzipNLS
+    #Snipping tool
+    flameshot
+    #notifications
+    libnotify
+    dunst
   ];
 }
