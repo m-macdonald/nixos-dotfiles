@@ -17,3 +17,7 @@ if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
 fi
 
 source ${ZIM_HOME}/init.zsh
+
+# Forcing zsh to source my home manager variables as well.
+# This can be removed if I ever decide to move my entire zsh config into nix
+source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"

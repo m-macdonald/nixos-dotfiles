@@ -5,40 +5,38 @@ in {
   options.modules.zsh = { enable = mkEnableOption "zsh"; };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [ zsh ];   
-      file = {
-        # Sets .zshrc to my root home directory.
-        # TODO: Maybe find a way to move this into the .config/zsh folder?
-        ".zshrc".source = ./config/.zshrc;
-        # Sets the config files for the zim plugin manager
-        "zim" = {
-          source = ./config/zim;
-          target = ".config/zsh/zim";
-          recursive = true;
-        };
-      };
-    };
-  };
-
-  # Can be used if you want to keep the config within nix. 
-  # I prefer doing as above and allowing the config to be a separate dedicated file.
-  # Provides more freedom
-/*
     programs.zsh = {
+      enable = true;
       dotDir = ".config/zsh";
       enableCompletion = true;
       enableSyntaxHighlighting = true;
-      sessionVariables = {
-        EDITOR = "nvim";
+      shellAliases = {
+        ls = "ls -a";
       };
-
+      history = {
+        ignoreDups = true;
+      };
+      initExtra = ''
+        source '${pkgs.gitstatus}/'
+      '';
       # Aliases for directories
       # cd ~dots
       dirHashes = {
         dots = "$HOME/.dotfiles";
+        projects = "$HOME/Documents/projects";
       };
+      plugins = with pkgs; [
+        { 
+          name = "gitstatus";
+          file = "gitstatus.prompt.zsh";
+          src = pkgs.fetchFromGitHub {
+            owner = "romkatv";
+            repo = "gitstatus";
+            rev = "v1.5.4";
+            sha256 = "sha256-mVfB3HWjvk4X8bmLEC/U8SKBRytTh/gjjuReqzN5qTk=";
+          };
+        }
+      ];
     };
   };
-  */
 }

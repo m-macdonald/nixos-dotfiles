@@ -42,9 +42,7 @@
     portal = {
       enable = true;
       extraPortals = with pkgs; [
-#        xdg-desktop-portal-wlr
         inputs.xdg-portal-hyprland
- #       xdg-desktop-portal
       ];
     };
   };

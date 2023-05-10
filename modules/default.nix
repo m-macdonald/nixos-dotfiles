@@ -9,6 +9,7 @@
     ./hyprland
     ./zsh
     ./git
+    ./dunst
   ];
 
   home.packages = with pkgs; [
@@ -21,8 +22,6 @@
     unzipNLS
     #Snipping tool
     flameshot
-    #notifications
-    libnotify
-    dunst
+    grim
   ];
 }

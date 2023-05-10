@@ -8,6 +8,7 @@
       zsh.enable = true;
       hyprland.enable = true;
       git.enable = true;
+      dunst.enable = true;
     };
   };
 }

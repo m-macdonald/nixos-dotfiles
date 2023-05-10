@@ -10,9 +10,12 @@ in {
       sessionVariables = {
         TERM = "${pkgs.alacritty}/bin/alacritty";
       };
-      packages = with pkgs; [
-        alacritty
-      ];
+    };
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        window.opacity = 0.6;
+      };
     };
   };
 }

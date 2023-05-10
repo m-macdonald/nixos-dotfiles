@@ -18,13 +18,14 @@
   let
     system = "x86_64-linux";
     volta-package = ./packages/volta.nix;
+    flameshot-package = ./packages/flameshot.nix;
 
     pkgs = import nixpkgs {
       inherit system;
       config = { 
         allowUnfree = true;
       };
-      overlays = [ overlay-unstable overlay-volta/*inputs.nixpkgs-wayland.overlay*/ ];
+      overlays = [ overlay-unstable overlay-volta overlay-flameshot/*inputs.nixpkgs-wayland.overlay*/ ];
     };
 
     overlay-unstable = final: prev: {
@@ -36,6 +37,10 @@
 
     overlay-volta = final: prev: {
         volta = prev.callPackage volta-package {};
+    };
+
+    overlay-flameshot = final: prev: {
+        flameshot = prev.callPackage flameshot-package {};
     };
 
     overlay-bitwarden = final: prev: {
