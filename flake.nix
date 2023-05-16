@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nur.url = "github:nix-community/NUR";
     home-manager = {
       url = "github:nix-community/home-manager/release-22.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,7 +15,7 @@
 #    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs : 
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
   let
     system = "x86_64-linux";
     volta-package = ./packages/volta.nix;
@@ -24,8 +25,17 @@
       inherit system;
       config = { 
         allowUnfree = true;
+        packageOverrides = pkgs: {
+          steam = override-steam pkgs;
+          nur = override-nur pkgs;
+        };
       };
-      overlays = [ overlay-unstable overlay-volta overlay-flameshot/*inputs.nixpkgs-wayland.overlay*/ ];
+      overlays = [ 
+        overlay-unstable
+        overlay-volta
+        overlay-flameshot
+#        overlay-nur
+      ];
     };
 
     overlay-unstable = final: prev: {
@@ -53,6 +63,28 @@
           };
         });
     };
+
+    override-steam = pkgs: 
+      pkgs.steam.override {
+        extraPkgs = pkgs: with pkgs; [
+          xorg.libXcursor
+          xorg.libXi
+          xorg.libXinerama
+          xorg.libXScrnSaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib
+          libkrb5
+          keyutils
+        ];
+      };
+
+    override-nur = pkgs:
+      import nur { 
+        nurpkgs = nixpkgs.legacyPackages.x86_64-linux;
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      };
     
     lib = nixpkgs.lib;
 
@@ -82,7 +114,7 @@
 
   in { 
     nixosConfigurations = {
-      nixtop = mkSystem pkgs "x86_64-linux" "desktop";
+      desktop = mkSystem pkgs "x86_64-linux" "desktop";
     };
   };
 }

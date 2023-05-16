@@ -14,16 +14,4 @@ in {
       extraConfig = builtins.readFile ./hyprland.conf;
     };
   };
-/*
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      hyprland
-    ];
-    programs.hyprland = {
-      enable = true;
-      nvidiaPatches = true;
-      extraConfig = builtins.readFile ./hyprland.conf;
-    }; 
-  };
-*/
 }

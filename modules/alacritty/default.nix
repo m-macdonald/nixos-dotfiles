@@ -8,13 +8,13 @@ in {
   config = mkIf cfg.enable {
     home = { 
       sessionVariables = {
-        TERM = "${pkgs.alacritty}/bin/alacritty";
+        TERM = "alacritty";
       };
     };
     programs.alacritty = {
       enable = true;
       settings = {
-        window.opacity = 0.6;
+        window.opacity = 0.8;
       };
     };
   };

@@ -6,15 +6,18 @@
   imports = [
     ./alacritty
     ./nvim
+    ./firefox
     ./hyprland
     ./zsh
     ./git
     ./dunst
+    ./games
   ];
 
   home.packages = with pkgs; [
     spotify
-    firefox
+    discord
+
     rofi
     gcc
     bitwarden

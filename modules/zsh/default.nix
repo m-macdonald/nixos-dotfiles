@@ -12,13 +12,13 @@ in {
       enableSyntaxHighlighting = true;
       shellAliases = {
         ls = "ls -a";
+        rebuild = "sudo nixos-rebuild switch --flake ~dots/.#\${hostname}";
       };
       history = {
         ignoreDups = true;
       };
-      initExtra = ''
-        source '${pkgs.gitstatus}/'
-      '';
+      # Nothing for now, but leaving here so I don't have to find the documentation again.
+      initExtra = '' '';
       # Aliases for directories
       # cd ~dots
       dirHashes = {
@@ -27,13 +27,13 @@ in {
       };
       plugins = with pkgs; [
         { 
-          name = "gitstatus";
-          file = "gitstatus.prompt.zsh";
+          name = "spaceship";
+          file = "spaceship.zsh";
           src = pkgs.fetchFromGitHub {
-            owner = "romkatv";
-            repo = "gitstatus";
-            rev = "v1.5.4";
-            sha256 = "sha256-mVfB3HWjvk4X8bmLEC/U8SKBRytTh/gjjuReqzN5qTk=";
+            owner = "spaceship-prompt";
+            repo = "spaceship-prompt";
+            rev = "v4.13.5";
+            sha256 = "sha256-4yUSTDqUHSW8if84bjXht/iY9U7zR2/agVWKT5f2PKM=";
           };
         }
       ];

@@ -9,6 +9,7 @@
       hyprland.enable = true;
       git.enable = true;
       dunst.enable = true;
+      games.enable = true;
     };
   };
 }
