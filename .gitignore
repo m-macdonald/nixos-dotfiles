@@ -1,1 +1,2 @@
-result/
+# Prevents the result folder from a nix build from being included in commits
+result
