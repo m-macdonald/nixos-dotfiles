@@ -1,5 +1,8 @@
 { config, pkgs, inputs, ... }:
 {
+  imports = [
+    ../../modules/network-shares
+  ];
   environment.defaultPackages = [];
   services.xserver.desktopManager.xterm.enable = false;
 
@@ -61,7 +64,7 @@
   ];
 
   hardware = {
-    pulseaudio.enable = true;
+    pulseaudio.enable = false;
     bluetooth.enable = false;
     opengl = {
       enable = true;
@@ -136,12 +139,15 @@
   };
 
   security.rtkit.enable = true;
-
   services.pipewire = {
-    enable = false;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    wireplumber.enable = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   

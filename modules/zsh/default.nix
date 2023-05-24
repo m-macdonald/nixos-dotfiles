@@ -13,6 +13,7 @@ in {
       shellAliases = {
         ls = "ls -a";
         rebuild = "sudo nixos-rebuild switch --flake ~dots/.#\${hostname}";
+        shell = "fn() { nix-shell ~dots/shells/$1.nix };fn";
       };
       history = {
         ignoreDups = true;

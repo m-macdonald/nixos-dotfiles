@@ -19,8 +19,8 @@
     discord
 
     rofi
-    gcc
     bitwarden
+    pixiv-utils
     # Utilities
     unzipNLS
     #Snipping tool

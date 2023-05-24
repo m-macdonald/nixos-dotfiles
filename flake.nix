@@ -20,6 +20,7 @@
     system = "x86_64-linux";
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
+    swww-package = ./packages/swww.nix;
 
     pkgs = import nixpkgs {
       inherit system;
@@ -34,7 +35,8 @@
         overlay-unstable
         overlay-volta
         overlay-flameshot
-#        overlay-nur
+        overlay-swww
+        overlay-bitwarden
       ];
     };
 
@@ -46,22 +48,26 @@
     };
 
     overlay-volta = final: prev: {
-        volta = prev.callPackage volta-package {};
+      volta = prev.callPackage volta-package {};
     };
 
     overlay-flameshot = final: prev: {
-        flameshot = prev.callPackage flameshot-package {};
+      flameshot = prev.callPackage flameshot-package {};
+    };
+
+    overlay-swww = final: prev: {
+      swww = prev.callPackage swww-package {};
     };
 
     overlay-bitwarden = final: prev: {
-        bitwarden = prev.bitwarden.overridAttrs (old: rec {
-          name = "bitwarden";
-          version = "2023.4.0";
-          src = prev.fetchurl {
-            url = "https://github.com/bitwarden/clients/releases/download/desktop-v${version}/Bitwarden-${version}-amd64.deb";
-            sha256 = prev.lib.fakeSha256;
-          };
-        });
+      bitwarden = prev.bitwarden.overrideAttrs (old: rec {
+        name = "bitwarden";
+        version = "2023.4.0";
+        src = prev.fetchurl {
+          url = "https://github.com/bitwarden/clients/releases/download/desktop-v${version}/Bitwarden-${version}-amd64.deb";
+          sha256 = "sha256-fpPxB4FdPe5tmalSRjGCrK3/0erazhg8SnuGdlms8bk=";
+        };
+      });
     };
 
     override-steam = pkgs: 
