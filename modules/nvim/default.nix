@@ -79,15 +79,24 @@ in {
           plugin = cmp-nvim-lsp;
         }
         {
+          plugin = luasnip;
+        }
+        {
           plugin = harpoon;
         }
       ];
     };
 
+    # Language servers
     home.packages = with pkgs; [
+      # Lua
       sumneko-lua-language-server
+      # Rust
       rust-analyzer rustup
+      # Typescript
       nodePackages.typescript-language-server
+      # Nix
+      nil
     ];
 
     home.file."nvim" = {

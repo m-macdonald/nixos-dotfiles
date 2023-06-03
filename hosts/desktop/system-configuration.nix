@@ -47,8 +47,10 @@
   xdg = {
     portal = {
       enable = true;
-      extraPortals = with pkgs; [
-        inputs.xdg-portal-hyprland
+      extraPortals = [
+        (inputs.xdph.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override {
+          hyprland-share-picker = inputs.xdph.packages.${pkgs.system}.hyprland-share-picker.override {hyprland = inputs.hyprland.packages.${pkgs.system}.default.override { nvidiaPatches = true; enableXWayland = true; hidpiXWayland = true; };};
+        })
       ];
     };
   };
@@ -132,7 +134,14 @@
       }];
     };
   };
-*/
+  */
+
+  programs = {
+    dconf.enable = true;
+    xwayland.enable = true;
+  };
+  security.polkit.enable = true;
+  services.xserver.displayManager.sessionPackages = [ inputs.hyprland.packages.${pkgs.system}.default ];
   sound = {
     enable = true;
 #    mediaKeys = true;
