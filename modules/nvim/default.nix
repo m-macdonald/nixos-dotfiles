@@ -97,6 +97,8 @@ in {
       nodePackages.typescript-language-server
       # Nix
       nil
+      # Svelte
+      nodePackages.svelte-language-server # vimPlugins.nvim-treesitter-parsers.svelte
     ];
 
     home.file."nvim" = {
