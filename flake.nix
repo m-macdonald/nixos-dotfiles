@@ -95,7 +95,7 @@
     lib = nixpkgs.lib;
 
     mkSystem = pkgs: system: hostname:
-      nixpkgs.lib.nixosSystem {
+      lib.nixosSystem {
         system = system;
 
         modules = [
