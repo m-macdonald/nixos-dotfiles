@@ -70,7 +70,7 @@ in {
           plugin = telescope-fzf-native-nvim;
         }
         {
-          plugin = nvim-treesitter.withPlugins (p: [ p.javascript p.c p.json p.go p.c-sharp p.typescript p.rust p.bash p.html p.css p.jsdoc p.lua ] );
+          plugin = nvim-treesitter.withPlugins (p: [ p.javascript p.c p.json p.go p.c-sharp p.typescript p.rust p.bash p.html p.css p.jsdoc p.lua p.svelte ] );
         }
         {
           plugin = nvim-treesitter-textobjects;
@@ -92,7 +92,7 @@ in {
       # Lua
       sumneko-lua-language-server
       # Rust
-      rust-analyzer rustup
+#      rust-analyzer rustup
       # Typescript
       nodePackages.typescript-language-server
       # Nix
