@@ -52,6 +52,9 @@ vim.o.undofile = true
 -- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.tabstop = 4;
+vim.o.shiftwidth = 4
+vim.o.expandtab = true;
 
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
@@ -274,7 +277,7 @@ local servers = {
     },
   },
   nil_ls = {},
-  svelte = {}
+  svelte = {},
 }
 -- Setup neovim lua configuration
 require('neodev').setup()

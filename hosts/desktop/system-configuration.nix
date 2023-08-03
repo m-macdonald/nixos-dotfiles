@@ -118,7 +118,7 @@
 
   users.users.maddux = {
     isNormalUser = true;
-    extraGroups = [ "input" "wheel" ];
+    extraGroups = [ "input" "wheel" "docker" ];
     shell = pkgs.zsh;
     initialPassword = "changeme";
   };
@@ -158,6 +158,8 @@
     pulse.enable = true;
     jack.enable = true;
   };
+
+  virtualisation.docker.enable = true;
 
   
   # DO NOT EDIT

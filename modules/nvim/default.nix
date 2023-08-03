@@ -99,6 +99,8 @@ in {
       nil
       # Svelte
       nodePackages.svelte-language-server # vimPlugins.nvim-treesitter-parsers.svelte
+      # For .NET
+      omnisharp-roslyn
     ];
 
     home.file."nvim" = {
