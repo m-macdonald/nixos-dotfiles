@@ -17,6 +17,7 @@
   home.packages = with pkgs; [
     # Dev
     dbeaver
+    unstable.obsidian
 
     spotify
     discord
