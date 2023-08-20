@@ -19,7 +19,7 @@ in {
         nvidiaPatches = true;
       };
       systemdIntegration = true;
-      extraConfig = builtins.readFile ./config/hyprland.conf;
+#      extraConfig = builtins.readFile ./config/hyprland.conf;
     };
 
     home = {

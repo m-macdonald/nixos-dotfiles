@@ -12,6 +12,8 @@
 
     hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    # Contains fixes for issues in various hardware configurations. Has a fix for my lenovo laptop
+    nixos-hardware.url = "github:NixOs/nixos-hardware/master";
 #    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
@@ -111,6 +113,7 @@
               users.maddux = (./. + "/hosts/${hostname}/users.nix");
             };
           }
+          inputs.nixos-hardware.nixosModules.lenovo-legion-16ach6h-hybrid
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
@@ -118,6 +121,7 @@
   in { 
     nixosConfigurations = {
       desktop = mkSystem pkgs "x86_64-linux" "desktop";
+      laptop = mkSystem pkgs "x84_64-liinux" "laptop";
     };
   };
 }
