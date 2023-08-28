@@ -3,7 +3,6 @@
   mkHmUser = { userConfig, username }:
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-#      specialArgs = inputs;
       modules = [
         ../modules
         {
@@ -11,6 +10,11 @@
             username = username;
             homeDirectory = "/home/${username}";
             stateVersion = "22.11";
+            /*
+            packages = with pkgs; [
+              git
+            ];
+            */
           };
         }
         userConfig

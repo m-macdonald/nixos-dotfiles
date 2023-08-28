@@ -15,9 +15,9 @@ let cfg = config.modules.hyprland;
   '';
 in {
   options.modules.hyprland = { enable = mkEnableOption "hyprland"; };
-  /*imports = [
+  imports = [
     inputs.hyprland.homeManagerModules.default
-  ];*/
+  ];
 
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {

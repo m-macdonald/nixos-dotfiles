@@ -137,15 +137,12 @@
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
-
-#      home-manager.extraSpecialArgs = inputs;
-_module.args = inputs;
   in {
     homeManagerConfigurations = {
         maddux = utils.user.mkHmUser {
           username = "maddux";
           userConfig = {
-           config = { 
+           # config = { 
              modules = {
               alacritty.enable = true;
               nvim.enable = true;
@@ -155,7 +152,7 @@ _module.args = inputs;
               dunst.enable = true;
               games.enable = true;
             };
-          };
+          # };
         };
       };
     };
