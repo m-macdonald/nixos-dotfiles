@@ -4,7 +4,7 @@ let cfg = config.modules.git;
 in {
   options.modules.git = { enable = mkEnableOption "git"; };
 
-  config = mkIf cfg.enable {
+  config = mkIf true {
     programs.git = {
       enable = true;
       userName = "m-macdonald";

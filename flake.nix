@@ -21,6 +21,7 @@
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
     swww-package = ./packages/swww.nix;
+    lsLib = import ./utils/lslib.nix { inherit lib; };
 
     pkgs = import nixpkgs {
       inherit system;
@@ -94,30 +95,37 @@
     
     lib = nixpkgs.lib;
 
-    mkSystem = pkgs: system: hostname:
+    mkSystem = folder: name:
       lib.nixosSystem {
-        system = system;
+        system = import ./${folder}/${name}/_localSystem.nix;
 
         modules = [
-          { networking.hostName = hostname; }
-          (./. + "/hosts/${hostname}/system-configuration.nix")
-          (./. + "/hosts/${hostname}/hardware-configuration.nix")
+          { networking.hostName = name; }
+          (./. + "/hosts/${name}/system-configuration.nix")
+          (./. + "/hosts/${name}/hardware-configuration.nix")
+#          (./. + "/modules/default.nix")
           home-manager.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = { inherit inputs; inherit pkgs; };
-              users.maddux = (./. + "/hosts/${hostname}/users.nix");
+              users.maddux = (./. + "/hosts/${name}/users/maddux/home-manager.nix");
             };
           }
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
-
-  in { 
-    nixosConfigurations = {
-      desktop = mkSystem pkgs "x86_64-linux" "desktop";
-    };
+  in {
+      nixosConfigurations = (folder: 
+        builtins.listToAttrs 
+        (
+          map
+          (x: {
+            name = x;
+            value = mkSystem folder x;
+          })
+          (lsLib.ls ./${folder})
+        )) "hosts";
   };
 }
