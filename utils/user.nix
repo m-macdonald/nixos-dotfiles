@@ -10,11 +10,6 @@
             username = username;
             homeDirectory = "/home/${username}";
             stateVersion = "22.11";
-            /*
-            packages = with pkgs; [
-              git
-            ];
-            */
           };
         }
         userConfig
