@@ -17,12 +17,16 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
   let
-    system = "x86_64-linux";
+    utils = import ./utils {
+      inherit system nixpkgs pkgs home-manager lib /* overlays patchedPkgs */inputs;
+    };
+    
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
     swww-package = ./packages/swww.nix;
-    lsLib = import ./utils/lslib.nix { inherit lib; };
 
+    system = "x86_64-linux";
+    
     pkgs = import nixpkgs {
       inherit system;
       config = { 
@@ -125,7 +129,7 @@
             name = x;
             value = mkSystem folder x;
           })
-          (lsLib.ls ./${folder})
+          (utils.lsLib.ls ./${folder})
         )) "hosts";
   };
 }
