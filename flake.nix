@@ -18,12 +18,21 @@
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
   let
     utils = import ./utils {
-      inherit system nixpkgs pkgs home-manager lib /* overlays patchedPkgs */inputs;
+      inherit system nixpkgs pkgs home-manager lib overlays /* patchedPkgs */inputs;
     };
     
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
     swww-package = ./packages/swww.nix;
+
+    overlays = [ 
+      overlay-unstable
+      overlay-volta
+      overlay-flameshot
+      overlay-swww
+      overlay-bitwarden
+    ];
+
 
     system = "x86_64-linux";
     
@@ -36,13 +45,7 @@
           nur = override-nur pkgs;
         };
       };
-      overlays = [ 
-        overlay-unstable
-        overlay-volta
-        overlay-flameshot
-        overlay-swww
-        overlay-bitwarden
-      ];
+      overlays = overlays;
     };
 
     overlay-unstable = final: prev: {
@@ -107,20 +110,56 @@
           { networking.hostName = name; }
           (./. + "/hosts/${name}/system-configuration.nix")
           (./. + "/hosts/${name}/hardware-configuration.nix")
-#          (./. + "/modules/default.nix")
-          home-manager.nixosModules.home-manager
+    /*      home-manager.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = { inherit inputs; inherit pkgs; };
-              users.maddux = (./. + "/hosts/${name}/users/maddux/home-manager.nix");
+              users.maddux = utils.user.mkHmUser {
+                userConfig = {
+                  modules = {
+                    alacritty.enable = true;
+                    nvim.enable = true;
+                    zsh.enable = true;
+                    hyprland.enable = true;
+                    git.enable = true;
+                    dunst.enable = true;
+                    games.enable = true;
+                  };
+                };
+                username = "maddux";
+              };
+              #(./. + "/hosts/${name}/users/maddux/home-manager.nix");
             };
-          }
+            }
+            */
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
+
+#      home-manager.extraSpecialArgs = inputs;
+_module.args = inputs;
   in {
+    homeManagerConfigurations = {
+        maddux = utils.user.mkHmUser {
+          username = "maddux";
+          userConfig = {
+           config = { 
+             modules = {
+              alacritty.enable = true;
+              nvim.enable = true;
+              zsh.enable = true;
+              hyprland.enable = true;
+              git.enable = true;
+              dunst.enable = true;
+              games.enable = true;
+            };
+          };
+        };
+      };
+    };
+
       nixosConfigurations = (folder: 
         builtins.listToAttrs 
         (

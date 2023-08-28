@@ -1,24 +1,21 @@
-{ pkgs, home-manager, lib, system, overlays, ... }:
+{ pkgs, home-manager, lib, system, overlays, inputs, ... }:
 {
   mkHmUser = { userConfig, username }:
     home-manager.lib.homeManagerConfiguration {
-      inherit system username pkgs;
-      stateVersion = "";
-      configuration = {
-        user = userConfig;
-
-        nixpkgs.overlays = overlays;
-        nixpkgs.config.allowUnfree = true;
-
-        systemd.user.startServices = true;
-        home.stateVersion = "";
-        home.username = username;
-        home.homeDirectory = "/home/${username}";
-
-        imports = [ ../modules ];
-      };
-
-      homeDirectory = "/home/${username}";
+      inherit pkgs;
+#      specialArgs = inputs;
+      modules = [
+        ../modules
+        {
+          home = {
+            username = username;
+            homeDirectory = "/home/${username}";
+            stateVersion = "22.11";
+          };
+        }
+        userConfig
+      ];
+      extraSpecialArgs = { inherit inputs; };
     };
 
 
