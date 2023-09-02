@@ -30,9 +30,7 @@
       overlay-volta
       overlay-flameshot
       overlay-swww
-      overlay-bitwarden
     ];
-
 
     system = "x86_64-linux";
     
@@ -67,17 +65,6 @@
       swww = prev.callPackage swww-package {};
     };
 
-    overlay-bitwarden = final: prev: {
-      bitwarden = prev.bitwarden.overrideAttrs (old: rec {
-        name = "bitwarden";
-        version = "2023.4.0";
-        src = prev.fetchurl {
-          url = "https://github.com/bitwarden/clients/releases/download/desktop-v${version}/Bitwarden-${version}-amd64.deb";
-          sha256 = "sha256-fpPxB4FdPe5tmalSRjGCrK3/0erazhg8SnuGdlms8bk=";
-        };
-      });
-    };
-
     override-steam = pkgs: 
       pkgs.steam.override {
         extraPkgs = pkgs: with pkgs; [
@@ -102,45 +89,52 @@
     
     lib = nixpkgs.lib;
 
-    mkSystem = folder: name:
+    mkSystem = folder: hostname:
       lib.nixosSystem {
-        system = import ./${folder}/${name}/_localSystem.nix;
+        system = import ./${folder}/${hostname}/_localSystem.nix;
 
         modules = [
-          { networking.hostName = name; }
-          (./. + "/hosts/${name}/system-configuration.nix")
-          (./. + "/hosts/${name}/hardware-configuration.nix")
+          { networking.hostName = hostname; }
+          (./. + "/hosts/${hostname}/system-configuration.nix")
+          (./. + "/hosts/${hostname}/hardware-configuration.nix")
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
 
-    mkUsers = folder:
+    mkUsers = folder: hostname:
       builtins.listToAttrs
       (
         map 
-        (x: 
+        (username: 
         let 
-          usersFolder = "/${folder}/users/${x}";
+          usersFolder = "/${folder}/${hostname}/users/${username}";
         in
         {
-          name = x;
+          name = "${username}@${hostname}";
           value = utils.user.mkHmUser {
-            username = x;
+            username = username;
             userConfig = (./. + "${usersFolder}/home.nix");
           };
         })
-        (utils.lsLib.ls ./${folder}/users)
+        (utils.lsLib.ls ./${folder}/${hostname}/users)
       );
+
   in {
-    homeManagerConfigurations = mkUsers "hosts/desktop";
+    homeManagerConfigurations = (folder:
+    utils.attrsets.recursiveMerge (
+      builtins.map 
+      (hostname: mkUsers folder hostname)
+      (utils.lsLib.ls ./${folder})
+    )
+    ) "hosts";
 
     nixosConfigurations = (folder: 
       builtins.listToAttrs 
       (
         map
-        (x: {
-          name = x;
-          value = mkSystem folder x;
+        (hostname: {
+          name = hostname;
+          value = mkSystem folder hostname;
         })
         (utils.lsLib.ls ./${folder})
       )) "hosts";
