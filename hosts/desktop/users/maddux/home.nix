@@ -1,12 +1,11 @@
 { pkgs, username, config, lib, inputs, ... }:
 {
   imports = [../../../../modules/default.nix];
-  #
-  # isNormalUser = true;
-  # extraGroups = [ "input" "wheel" "docker" ];
-  # shell = pkgs.zsh;
-  # nix.settings.allowed-users = [ username ];
-  config = {
+    config = {
+    # isNormalUser = true;
+    # extraGroups = [ "input" "wheel" "docker" ];
+    # shell = pkgs.zsh;
+    # nix.settings.allowed-users = [ username ];
     modules = {
       alacritty.enable = true;
       nvim.enable = true;

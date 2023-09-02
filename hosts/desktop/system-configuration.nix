@@ -3,7 +3,7 @@
   imports = [
     ../../modules/network-shares
   ];
-  environment.defaultPackages = [];
+  environment.defaultPackages = [ ];
   services.xserver.desktopManager.xterm.enable = false;
 
   programs.zsh.enable = true;
@@ -67,7 +67,7 @@
 
   hardware = {
     pulseaudio.enable = false;
-    bluetooth.enable = false;
+    bluetooth.enable = true;
     opengl = {
       enable = true;
       driSupport = true;
@@ -144,7 +144,7 @@
   services.xserver.displayManager.sessionPackages = [ inputs.hyprland.packages.${pkgs.system}.default ];
   sound = {
     enable = true;
-#    mediaKeys = true;
+    mediaKeys.enable = true;
   };
 
   security.rtkit.enable = true;

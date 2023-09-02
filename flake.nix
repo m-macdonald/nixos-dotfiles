@@ -113,33 +113,36 @@
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
-  in {
-    homeManagerConfigurations = {
-        maddux = utils.user.mkHmUser {
-          username = "maddux";
-          userConfig = {
-             modules = {
-              alacritty.enable = true;
-              nvim.enable = true;
-              zsh.enable = true;
-              hyprland.enable = true;
-              git.enable = true;
-              dunst.enable = true;
-              games.enable = true;
-            };
-        };
-      };
-    };
 
-      nixosConfigurations = (folder: 
-        builtins.listToAttrs 
-        (
-          map
-          (x: {
-            name = x;
-            value = mkSystem folder x;
-          })
-          (utils.lsLib.ls ./${folder})
-        )) "hosts";
+    mkUsers = folder:
+      builtins.listToAttrs
+      (
+        map 
+        (x: 
+        let 
+          usersFolder = "/${folder}/users/${x}";
+        in
+        {
+          name = x;
+          value = utils.user.mkHmUser {
+            username = x;
+            userConfig = (./. + "${usersFolder}/home.nix");
+          };
+        })
+        (utils.lsLib.ls ./${folder}/users)
+      );
+  in {
+    homeManagerConfigurations = mkUsers "hosts/desktop";
+
+    nixosConfigurations = (folder: 
+      builtins.listToAttrs 
+      (
+        map
+        (x: {
+          name = x;
+          value = mkSystem folder x;
+        })
+        (utils.lsLib.ls ./${folder})
+      )) "hosts";
   };
 }
