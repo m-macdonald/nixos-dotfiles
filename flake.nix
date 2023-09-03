@@ -121,11 +121,11 @@
 
   in {
     homeManagerConfigurations = (folder:
-    utils.attrsets.recursiveMerge (
-      builtins.map 
-      (hostname: mkUsers folder hostname)
-      (utils.lsLib.ls ./${folder})
-    )
+      utils.attrsets.recursiveMerge (
+        builtins.map 
+        (hostname: mkUsers folder hostname)
+        (utils.lsLib.ls ./${folder})
+      )
     ) "hosts";
 
     nixosConfigurations = (folder: 
