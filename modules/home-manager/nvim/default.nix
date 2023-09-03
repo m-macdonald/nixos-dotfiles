@@ -105,7 +105,7 @@ in {
 
     home.file."nvim" = {
       # Makes this a symlink that lives outside the nix store. This way I can make updates to it without requiring a nix switch to see the changes
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/modules/nvim/config";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/modules/home-manager/nvim/config";
       target = ".config/nvim";
       recursive = true;
     };

@@ -1,7 +1,7 @@
 { pkgs, username, config, lib, inputs, ... }:
 {
-  imports = [../../../../modules/default.nix];
-    config = {
+  imports = [../../../../modules/home-manager/default.nix];
+  config = {
     # isNormalUser = true;
     # extraGroups = [ "input" "wheel" "docker" ];
     # shell = pkgs.zsh;

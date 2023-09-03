@@ -1,7 +1,7 @@
 { config, pkgs, inputs, ... }:
 {
   imports = [
-    ../../modules/network-shares
+    ../../modules/nixos/network-shares
   ];
   environment.defaultPackages = [ ];
   services.xserver.desktopManager.xterm.enable = false;

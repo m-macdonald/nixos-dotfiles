@@ -1,5 +1,5 @@
 {
-  description = "My personal dotfiles";
+  description = "My Nixos Configurations";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.05";
@@ -28,6 +28,7 @@
     overlays = [ 
       overlay-unstable
       overlay-volta
+#      import ./overlays/flameshot
       overlay-flameshot
       overlay-swww
     ];
@@ -90,7 +91,8 @@
     lib = nixpkgs.lib;
 
     mkSystem = folder: hostname:
-      lib.nixosSystem {
+      lib.nixosSystem
+      {
         system = import ./${folder}/${hostname}/_localSystem.nix;
 
         modules = [
