@@ -2,7 +2,15 @@
 {
   imports = [
     ../../modules/nixos/network-shares
+    ../../modules/nixos/common
+    ../../modules/nixos/docker
   ];
+
+  config = {
+    modules.docker.enable = true;
+
+
+
   environment.defaultPackages = [ ];
   services.xserver.desktopManager.xterm.enable = false;
 
@@ -66,7 +74,7 @@
   ];
 
   hardware = {
-    pulseaudio.enable = false;
+    # pulseaudio.enable = false;
     bluetooth.enable = true;
     opengl = {
       enable = true;
@@ -95,11 +103,11 @@
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
-    extraOptions = "
-      experimental-features = nix-command flakes
-      keep-outputs = true
-      keep-derivations = true
-    ";
+    # extraOptions = "
+    #   experimental-features = nix-command flakes
+    #   keep-outputs = true
+    #   keep-derivations = true
+    # ";
   };
 
   boot = {
@@ -115,26 +123,6 @@
   console = {
     keyMap = "us";
   };
-/*
-  users.users.maddux = {
-    isNormalUser = true;
-    extraGroups = [ "input" "wheel" "docker" ];
-    shell = pkgs.zsh;
-    initialPassword = "changeme";
-  };
-/*
-  security = {
-    sudo.enable = false;
-    doas = {
-      enable = true;
-      extraRules = [{
-        users = [ "maddux" ];
-        keepEnv = true;
-        persist = true;
-      }];
-    };
-  };
-  */
 
   programs = {
     dconf.enable = true;
@@ -142,12 +130,13 @@
   };
   security.polkit.enable = true;
   services.xserver.displayManager.sessionPackages = [ inputs.hyprland.packages.${pkgs.system}.default ];
-  sound = {
-    enable = true;
-    mediaKeys.enable = true;
-  };
+  # sound = {
+  #   enable = true;
+  #   mediaKeys.enable = true;
+  # };
 
   security.rtkit.enable = true;
+  /*
   services.pipewire = {
     enable = true;
     alsa = {
@@ -158,10 +147,11 @@
     pulse.enable = true;
     jack.enable = true;
   };
-
-  virtualisation.docker.enable = true;
+*/
+  # virtualisation.docker.enable = true;
 
   
   # DO NOT EDIT
   system.stateVersion = "22.11";
+};
 }
