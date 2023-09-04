@@ -99,6 +99,19 @@
           { networking.hostName = hostname; }
           (./. + "/hosts/${hostname}/system-configuration.nix")
           (./. + "/hosts/${hostname}/hardware-configuration.nix")
+          {users.users = builtins.listToAttrs
+          (
+            map
+            (username:
+              let userFolder = "${folder}/${hostname}/users/${username}";
+              in
+              {
+                name = username;
+                value = utils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
+              }
+            )
+            (utils.lsLib.ls ./${folder}/${hostname}/users)
+          );}          
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
@@ -109,13 +122,13 @@
         map 
         (username: 
         let 
-          usersFolder = "/${folder}/${hostname}/users/${username}";
+          userFolder = "${folder}/${hostname}/users/${username}";
         in
         {
           name = "${username}@${hostname}";
           value = utils.user.mkHmUser {
             username = username;
-            userConfig = (./. + "${usersFolder}/home.nix");
+            userConfig = ./${userFolder}/home.nix;
           };
         })
         (utils.lsLib.ls ./${folder}/${hostname}/users)

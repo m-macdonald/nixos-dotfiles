@@ -20,14 +20,12 @@
 
   mkSystemUser = { username, groups, uid, shell, ... }:
   {
-    users.users."${username}" = {
-      name = username;
-      isNormalUser = true;
-      isSystemUser = false;
-      extraGroups = groups;
-      uid = uid;
-      initialPassword = "changeme";
-      shell = shell;
-    };
+    name = username;
+    isNormalUser = true;
+    isSystemUser = false;
+    extraGroups = groups;
+    uid = uid;
+    initialPassword = "changeme";
+    shell = shell;
   };
 }

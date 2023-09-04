@@ -115,7 +115,7 @@
   console = {
     keyMap = "us";
   };
-
+/*
   users.users.maddux = {
     isNormalUser = true;
     extraGroups = [ "input" "wheel" "docker" ];
