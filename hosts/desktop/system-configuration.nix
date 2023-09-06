@@ -1,13 +1,13 @@
 { config, pkgs, inputs, ... }:
 {
   imports = [
-    ../../modules/nixos/network-shares
-    ../../modules/nixos/common
-    ../../modules/nixos/docker
+    ../../modules/nixos
   ];
 
   config = {
     modules.docker.enable = true;
+    modules.nvidia.enable = true;
+    modules.hyprland.enable = true;
 
 
 
@@ -15,7 +15,7 @@
   services.xserver.desktopManager.xterm.enable = false;
 
   programs.zsh.enable = true;
-
+/*
   fonts = {
     fonts = with pkgs; [
       roboto
@@ -26,7 +26,7 @@
       hinting.autohint = true;
     };
   };
-
+*/
   environment.variables = {
     NIXOS_OZONE_WL = "1";
     __GL_GSYNC_ALLOWED = "0";
@@ -41,17 +41,19 @@
     QT_QPA_PLATFORM = "x11";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     MOZ_ENABLE_WAYLAND = "1";
-    WLR_BACKEND = "vulkan";
-    WLR_RENDERER = "vulkan";
-    WLR_NO_HARDWARE_CURSORS = "1";
+    # WLR_BACKEND = "vulkan";
+    # WLR_RENDERER = "vulkan";
+    # WLR_NO_HARDWARE_CURSORS = "1";
     XDG_SESSION_TYPE = "wayland";
+    /*
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_DESKTOP = "Hyprland";
+    */
     # This variable seems to conflict with gamescope. Commenting for testing
 #    SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
   };
-
+/*
   xdg = {
     portal = {
       enable = true;
@@ -62,9 +64,10 @@
       ];
     };
   };
-
+*/
   # NVIDIA CONFIG
   # this can probably be moved to its own module
+  /*
   services.xserver.videoDrivers = [ "nvidia" ];
 
   environment.systemPackages = with pkgs; [
@@ -72,7 +75,7 @@
     vulkan-validation-layers
     vulkan-tools
   ];
-
+*/
   hardware = {
     # pulseaudio.enable = false;
     bluetooth.enable = true;
@@ -80,23 +83,29 @@
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
+/*
       extraPackages = with pkgs; [
         nvidia-vaapi-driver
-      ];
+        ];
+        */
     };
+    /*
     nvidia = {
       open = true;
       powerManagement.enable = true;
       modesetting.enable = true;
-    };
+      };
+      */
   };
 
   nix = {
     settings = {
       auto-optimise-store = true;
       allowed-users = [ "maddux" ];
+      /*
       substituters = ["https://hyprland.cachix.org"];
       trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      */
     };
     gc = {
       automatic = true;
@@ -129,7 +138,7 @@
     xwayland.enable = true;
   };
   security.polkit.enable = true;
-  services.xserver.displayManager.sessionPackages = [ inputs.hyprland.packages.${pkgs.system}.default ];
+  # services.xserver.displayManager.sessionPackages = [ inputs.hyprland.packages.${pkgs.system}.default ];
   # sound = {
   #   enable = true;
   #   mediaKeys.enable = true;

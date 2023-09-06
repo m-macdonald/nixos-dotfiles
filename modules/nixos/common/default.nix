@@ -1,5 +1,9 @@
 { config, pkgs, inputs, ... }:
 {
+  imports = [
+    ./fonts.nix
+  ];
+
   nix = {
     extraOptions = "
       experimental-features = nix-command flakes
