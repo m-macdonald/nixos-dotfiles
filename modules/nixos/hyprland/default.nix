@@ -33,7 +33,7 @@ in
         enable = true;
         extraPortals = [
           (inputs.xdph.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override {
-            hyprland-share-picker = inputs.xdph.packages.${pkgs.system}.hyprland-share-picker.override {hyprland = inputs.hyprland.packages.${pkgs.system}.default.override { nvidiaPatches = cfg.nvidia.enable; enableXWayland = true; hidpiXWayland = true; };};
+            hyprland-share-picker = inputs.xdph.packages.${pkgs.system}.hyprland-share-picker.override {hyprland = inputs.hyprland.packages.${pkgs.system}.default.override { enableNvidiaPatches = cfg.nvidia.enable; enableXWayland = true; };};
           })
         ];
       };
