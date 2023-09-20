@@ -9,6 +9,7 @@
     ./git
     ./dunst
     ./games
+    ./tmux
   ];
 
   home.packages = with pkgs; [

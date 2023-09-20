@@ -14,6 +14,7 @@
       git.enable = true;
       dunst.enable = true;
       games.enable = true;
+      tmux.enable = true;
     };
   };
 }

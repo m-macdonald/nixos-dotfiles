@@ -84,6 +84,12 @@ in {
         {
           plugin = harpoon;
         }
+        {
+          plugin = nvim-dap;
+        }
+        {
+          plugin = nvim-dap-ui;
+        }
       ];
     };
 
