@@ -1,8 +1,14 @@
 { config, pkgs, inputs, ... }:
 {
   imports = [
+    ./bluetooth.nix
     ./fonts.nix
+    ./nix.nix
+    ./shells.nix
   ];
+
+  environment.defaultPackages = [ ];
+  services.xserver.desktopManager.xterm.enable = false;
 
   nix = {
     extraOptions = "
@@ -13,6 +19,7 @@
   };
 
   hardware.pulseaudio.enable = false;
+
 
   sound = {
     enable = true;

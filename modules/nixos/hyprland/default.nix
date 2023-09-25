@@ -22,7 +22,7 @@ in
     environment.variables = {
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_DESKTOP = "Hyprland";
-      # This is a fix for nvidia GPUs. Would like to find a way to conditionally include it if nvidia module is enabled
+      # TODO: This is a fix for nvidia GPUs. Would like to find a way to conditionally include it if nvidia module is enabled
       WLR_NO_HARDWARE_CURSORS = "1";
     };
 
