@@ -270,7 +270,7 @@ local servers = {
   gopls = {},
   rust_analyzer = {},
   tsserver = {},
-  lua = {
+  lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
@@ -318,7 +318,7 @@ cmp.setup {
     -- Shows suggestions based on the current language server
     { name = 'nvim_lsp' },
     -- Suggestions based on luasnip
-    {name = 'luasnip'},
+    { name = 'luasnip' },
     -- Autocomplete filepaths
     { name = 'path'},
     -- Suggests words found in the current buffer
