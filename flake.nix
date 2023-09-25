@@ -1,12 +1,12 @@
 {
-  description = "My personal dotfiles";
+  description = "My Nixos Configurations";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs.url = "nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -19,11 +19,24 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
   let
-    system = "x86_64-linux";
+    utils = import ./utils {
+      inherit system nixpkgs pkgs home-manager lib overlays /* patchedPkgs */inputs;
+    };
+    
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
     swww-package = ./packages/swww.nix;
 
+    overlays = [ 
+      overlay-unstable
+      overlay-volta
+#      import ./overlays/flameshot
+      overlay-flameshot
+      overlay-swww
+    ];
+
+    system = "x86_64-linux";
+    
     pkgs = import nixpkgs {
       inherit system;
       config = { 
@@ -33,13 +46,7 @@
           nur = override-nur pkgs;
         };
       };
-      overlays = [ 
-        overlay-unstable
-        overlay-volta
-        overlay-flameshot
-        overlay-swww
-        overlay-bitwarden
-      ];
+      overlays = overlays;
     };
 
     overlay-unstable = final: prev: {
@@ -59,17 +66,6 @@
 
     overlay-swww = final: prev: {
       swww = prev.callPackage swww-package {};
-    };
-
-    overlay-bitwarden = final: prev: {
-      bitwarden = prev.bitwarden.overrideAttrs (old: rec {
-        name = "bitwarden";
-        version = "2023.4.0";
-        src = prev.fetchurl {
-          url = "https://github.com/bitwarden/clients/releases/download/desktop-v${version}/Bitwarden-${version}-amd64.deb";
-          sha256 = "sha256-fpPxB4FdPe5tmalSRjGCrK3/0erazhg8SnuGdlms8bk=";
-        };
-      });
     };
 
     override-steam = pkgs: 
@@ -96,32 +92,67 @@
     
     lib = nixpkgs.lib;
 
-    mkSystem = pkgs: system: hostname:
-      nixpkgs.lib.nixosSystem {
-        system = system;
+    mkSystem = folder: hostname:
+      lib.nixosSystem
+      {
+        system = import ./${folder}/${hostname}/_localSystem.nix;
 
         modules = [
           { networking.hostName = hostname; }
           (./. + "/hosts/${hostname}/system-configuration.nix")
           (./. + "/hosts/${hostname}/hardware-configuration.nix")
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; inherit pkgs; };
-              users.maddux = (./. + "/hosts/${hostname}/users.nix");
-            };
-          }
-          inputs.nixos-hardware.nixosModules.lenovo-legion-16ach6h-hybrid
+          {users.users = builtins.listToAttrs
+          (
+            map
+            (username:
+              let userFolder = "${folder}/${hostname}/users/${username}";
+              in
+              {
+                name = username;
+                value = utils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
+              }
+            )
+            (utils.lsLib.ls ./${folder}/${hostname}/users)
+          );}          
         ];
         specialArgs = { inherit inputs; inherit pkgs; };
       };
+    mkUsers = folder: hostname:
+      builtins.listToAttrs
+      (
+        map 
+        (username: 
+        let 
+          userFolder = "${folder}/${hostname}/users/${username}";
+        in
+        {
+          name = "${username}@${hostname}";
+          value = utils.user.mkHmUser {
+            username = username;
+            userConfig = ./${userFolder}/home.nix;
+          };
+        })
+        (utils.lsLib.ls ./${folder}/${hostname}/users)
+      );
 
-  in { 
-    nixosConfigurations = {
-      desktop = mkSystem pkgs "x86_64-linux" "desktop";
-      laptop = mkSystem pkgs "x84_64-liinux" "laptop";
-    };
+  in {
+    homeManagerConfigurations = (folder:
+      utils.attrsets.recursiveMerge (
+        builtins.map 
+        (hostname: mkUsers folder hostname)
+        (utils.lsLib.ls ./${folder})
+      )
+    ) "hosts";
+
+    nixosConfigurations = (folder: 
+      builtins.listToAttrs 
+      (
+        map
+        (hostname: {
+          name = hostname;
+          value = mkSystem folder hostname;
+        })
+        (utils.lsLib.ls ./${folder})
+      )) "hosts";
   };
 }
