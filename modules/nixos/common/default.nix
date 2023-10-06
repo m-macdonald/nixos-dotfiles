@@ -20,7 +20,6 @@
 
   hardware.pulseaudio.enable = false;
 
-
   sound = {
     enable = true;
     mediaKeys.enable = true;

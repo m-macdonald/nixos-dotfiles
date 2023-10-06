@@ -15,6 +15,10 @@ in {
       enable = true;
       settings = {
         window.opacity = 0.8;
+        # TODO: Set this to the shell in the user's config
+        shell = {
+          program = "tmux";
+        };
       };
     };
   };
