@@ -50,6 +50,8 @@
             tmp.cleanOnBoot = true;
         };
 
+        systemd.enableEmergencyMode = false;
+
         services.xserver = {
             layout = "dh,us";
             extraLayouts.dh = {
