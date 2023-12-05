@@ -55,7 +55,7 @@
             extraLayouts.dh = {
                 description = "Colemak-DH ergo";
                 languages = [ "eng" ];
-                symbolsFile = ../symbols/colemak_dh;
+                symbolsFile = symbols/colemak_dh;
             };
         };
 
