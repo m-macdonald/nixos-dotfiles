@@ -67,6 +67,8 @@
             keyMap = "us";
         };
 
+        networking.networkmanager.enable = true;
+
         programs = {
             dconf.enable = true;
             xwayland.enable = true;
