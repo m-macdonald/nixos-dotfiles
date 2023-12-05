@@ -21,7 +21,7 @@
     };
 
   swapDevices = [ 
-    { device = "/.swapfile"; }
+    { device = "/dev/disk/by-label/swap"; }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
