@@ -52,7 +52,7 @@
 
         services.xserver = {
             layout = "dh,us";
-            extraLayouts = {
+            extraLayouts.dh = {
                 description = "Colemak-DH ergo";
                 languages = [ "eng" ];
                 symbolsFile = ../symbols/colemak_dh;
