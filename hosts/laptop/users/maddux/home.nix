@@ -2,10 +2,6 @@
 {
   imports = [../../../../modules/home-manager/default.nix];
   config = {
-    # isNormalUser = true;
-    # extraGroups = [ "input" "wheel" "docker" ];
-    # shell = pkgs.zsh;
-    # nix.settings.allowed-users = [ username ];
     modules = {
       alacritty.enable = true;
       nvim.enable = true;
@@ -13,7 +9,6 @@
       hyprland.enable = true;
       git.enable = true;
       dunst.enable = true;
-      games.enable = true;
       tmux.enable = true;
     };
   };
