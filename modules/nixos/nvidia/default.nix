@@ -17,7 +17,7 @@ in
 
     environment = {
       variables = {
-       WLR_BACKEND = "vulkan";
+        WLR_BACKEND = "vulkan";
         WLR_RENDERER = "vulkan";
       };
       systemPackages = with pkgs; [
@@ -35,7 +35,7 @@ in
       };
       nvidia = {
         open = true;
-        powerManagement.enable = true;
+        powerManagement.enable = false;
         modesetting.enable = true;
       };
     };
