@@ -14,7 +14,7 @@
         }
         userConfig
       ];
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = { inherit inputs system; };
     };
 
 

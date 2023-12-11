@@ -12,15 +12,16 @@
 
     hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    # nixvim.url = "github:m-macdonald/nixvim";
+    nixvim = {
+      url = "github:m-macdonald/nixvim-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 #    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
   let
-    utils = import ./utils {
-      inherit system nixpkgs pkgs home-manager lib overlays /* patchedPkgs */inputs;
-    };
-    
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
     swww-package = ./packages/swww.nix;
@@ -34,6 +35,10 @@
     ];
 
     system = "x86_64-linux";
+
+    utils = import ./utils {
+      inherit system nixpkgs pkgs home-manager lib overlays /* patchedPkgs */inputs;
+    };
     
     pkgs = import nixpkgs {
       inherit system;
@@ -91,16 +96,17 @@
     lib = nixpkgs.lib;
 
     mkSystem = folder: hostname:
-      lib.nixosSystem
+    let
+      system = import ./${folder}/${hostname}/_localSystem.nix; 
+    in lib.nixosSystem
       {
-        system = import ./${folder}/${hostname}/_localSystem.nix;
+        inherit system; 
 
         modules = [
           { networking.hostName = hostname; }
           (./. + "/hosts/${hostname}/system-configuration.nix")
           (./. + "/hosts/${hostname}/hardware-configuration.nix")
-          {users.users = builtins.listToAttrs
-          (
+          {users.users = builtins.listToAttrs (
             map
             (username:
               let userFolder = "${folder}/${hostname}/users/${username}";
@@ -111,9 +117,9 @@
               }
             )
             (utils.lsLib.ls ./${folder}/${hostname}/users)
-          );}          
+          );} 
         ];
-        specialArgs = { inherit inputs; inherit pkgs; };
+        specialArgs = { inherit inputs pkgs; };
       };
 
     mkUsers = folder: hostname:
@@ -133,7 +139,6 @@
         })
         (utils.lsLib.ls ./${folder}/${hostname}/users)
       );
-
   in {
     homeManagerConfigurations = (folder:
       utils.attrsets.recursiveMerge (

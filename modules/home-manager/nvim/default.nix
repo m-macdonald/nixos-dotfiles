@@ -1,8 +1,8 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, inputs, system, ... }:
 with lib;
 let 
   cfg = config.modules.nvim;
-  catppuccin-nvim = pkgs.vimUtils.buildVimPlugin {
+  /*catppuccin-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "catppuccin-nvim";
     src = pkgs.fetchFromGitHub {
       owner = "catppuccin";
@@ -10,15 +10,46 @@ let
       rev = "73587f9c454da81679202f1668c30fea6cdafd5e";
       sha256 = "sha256-UrHoESRYwALPo6LFFocEIM0CZa740tjxjvmYES7O5Rw=";
     };
-  };
+  };*/
 in {
-  options.modules.nvim = { enable = mkEnableOption "nvim"; };
+  imports = [
+    inputs.nixvim.homeManagerModules.${system}.nixvim
+  ];
+  options.modules.nvim = { 
+    enable = mkOption {
+      default = false;
+      description = "Enable the nvim text editor";
+      type = types.bool;
+    };
+    makeDefaultEditor = mkOption {
+      default = false;
+      description = "Set nvim to be the default text editor";
+      type = types.bool;
+    };
+  };
   
   config = mkIf cfg.enable {
+
+    programs.nixvim = {
+      enable = true;
+      defaultEditor = true;
+    };
+    
+    # home.packages = [
+    #   inputs.nixvim.legacyPackages.${system}.make { 
+    #     config = {
+    #       gopls.enable = true;
+    #     };
+    #   }
+    # ];
+
+
+/*
     programs.neovim = {
       enable = true;
       viAlias = true;
       vimAlias = true;
+      package = 
 
       plugins = with pkgs.vimPlugins; [
         vim-nix
@@ -115,8 +146,8 @@ in {
       target = ".config/nvim";
       recursive = true;
     };
-
-    home.sessionVariables = {
+*/
+    home.sessionVariables = mkIf cfg.makeDefaultEditor {
       EDITOR = "nvim";
     };
   };
