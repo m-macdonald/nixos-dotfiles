@@ -9,7 +9,7 @@ in {
       enable = true;
       dotDir = ".config/zsh";
       enableCompletion = true;
-      enableSyntaxHighlighting = true;
+      syntaxHighlighting.enable = true;
       shellAliases = {
         ls = "ls -a";
         rebuild = "sudo nixos-rebuild switch --flake ~dots/.#\${hostname}";
