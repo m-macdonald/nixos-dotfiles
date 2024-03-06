@@ -2,15 +2,15 @@
   description = "My Nixos Configurations";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.05";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland/";
+    # hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     # nixvim.url = "github:m-macdonald/nixvim";
     nixvim = {
