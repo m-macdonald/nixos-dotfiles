@@ -22,14 +22,9 @@ in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      # package = inputs.hyprland.packages.${pkgs.system}.default.override {
-      #   enableXWayland = true;
-      #   enableNvidiaPatches = cfg.enableNvidia;
-      # };
       xwayland.enable = true;
       enableNvidiaPatches = cfg.enableNvidia;
-      systemdIntegration = true;
-          # extraConfig = builtins.readFile ./config/hyprland.conf;
+      systemd.enable = true;
       settings = {
         "$mod" = "SUPER";
         env =
