@@ -2,14 +2,14 @@
 {
   imports = [
     ./alacritty
-    ./nvim
-    ./firefox
-    ./hyprland
-    ./zsh
-    ./git
     ./dunst
+    ./firefox
     ./games
+    ./git
+    ./hyprland
+    ./nvim
     ./tmux
+    ./zsh
   ];
 
   home.packages = with pkgs; [
