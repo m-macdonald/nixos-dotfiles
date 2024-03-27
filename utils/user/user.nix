@@ -1,4 +1,4 @@
-{ pkgs, home-manager, lib, system, overlays, inputs, ... }:
+{ pkgs, home-manager, lib, system, inputs, ... }:
 {
   mkHmUser = { userConfig, username }:
     home-manager.lib.homeManagerConfiguration {

@@ -9,7 +9,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     # hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     # nixvim.url = "github:m-macdonald/nixvim";
@@ -20,110 +20,64 @@
 #    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, ... }@inputs : 
   let
-    volta-package = ./packages/volta.nix;
-    flameshot-package = ./packages/flameshot.nix;
-    swww-package = ./packages/swww.nix;
+	nixlib = nixpkgs.lib;
 
-    overlays = [ 
-      overlay-unstable
-      overlay-volta
-#      import ./overlays/flameshot
-      overlay-flameshot
-      overlay-swww
-    ];
-
-    system = "x86_64-linux";
-
-    utils = import ./utils {
-      inherit system nixpkgs pkgs home-manager lib overlays /* patchedPkgs */inputs;
-    };
+	baseUtils = import ./utils/base {
+		lib = nixlib;
+	};
     
-    pkgs = import nixpkgs {
-      inherit system;
-      config = { 
-        allowUnfree = true;
-        packageOverrides = pkgs: {
-          steam = override-steam pkgs;
-          nur = override-nur pkgs;
-        };
-      };
-      overlays = overlays;
-    };
-
-    overlay-unstable = final: prev: {
-      unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    };
-
-    overlay-volta = final: prev: {
-      volta = prev.callPackage volta-package {};
-    };
-
-    overlay-flameshot = final: prev: {
-      flameshot = prev.callPackage flameshot-package {};
-    };
-
-    overlay-swww = final: prev: {
-      swww = prev.callPackage swww-package {};
-    };
-
-    override-steam = pkgs: 
-      pkgs.steam.override {
-        extraPkgs = pkgs: with pkgs; [
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
-        ];
-      };
-
-    override-nur = pkgs:
-      import nur { 
-        nurpkgs = nixpkgs.legacyPackages.x86_64-linux;
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      };
-    
-    lib = nixpkgs.lib;
-
     mkSystem = folder: hostname:
     let
-      system = import ./${folder}/${hostname}/_localSystem.nix; 
-    in lib.nixosSystem
+	systemPath = ./${folder}/${hostname};
+      system = import ./${folder}/${hostname}/_localSystem.nix;
+	pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
+	pkgs = pkgUtils.buildPkgs;
+#	pkgs = nixpkgs.legacyPackages.${system};
+	lib = pkgs.lib;
+	userUtils = import ./utils/user {
+     	 inherit system nixpkgs pkgs home-manager lib inputs;
+    	};
+	additionalModulesPath = ./${folder}/${hostname}/additional-modules.nix;
+	additionalModulesExist = builtins.pathExists additionalModulesPath;
+	additionalModules = nixlib.lists.optionals additionalModulesExist (import additionalModulesPath inputs).modules;
+	systemConfigurationPath = ./${folder}/${hostname}/system-configuration.nix;
+	hardwareConfigurationPath = ./${folder}/${hostname}/hardware-configuration.nix;
+    in nixlib.nixosSystem
       {
         inherit system; 
 
         modules = [
           { networking.hostName = hostname; }
-          (./. + "/hosts/${hostname}/system-configuration.nix")
-          (./. + "/hosts/${hostname}/hardware-configuration.nix")
+	  systemConfigurationPath
+	  hardwareConfigurationPath
           {users.users = builtins.listToAttrs (
             map
             (username:
-              let userFolder = "${folder}/${hostname}/users/${username}";
+              let userFolder = "./${folder}/${hostname}/users/${username}";
               in
               {
                 name = username;
-                value = utils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
+                value = userUtils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
               }
             )
-            (utils.lsLib.ls ./${folder}/${hostname}/users)
+            (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
           );} 
-        ];
+        ] ++ additionalModules;
         specialArgs = { inherit inputs pkgs; };
       };
 
     mkUsers = folder: hostname:
-      builtins.listToAttrs
+    let
+      system = import ./${folder}/${hostname}/_localSystem.nix;
+	userUtils = import ./utils/user {
+     	 inherit system nixpkgs pkgs home-manager lib inputs;
+    	};
+	pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
+	pkgs = pkgUtils.buildPkgs;
+	lib = pkgs.lib;
+    in builtins.listToAttrs
       (
         map 
         (username: 
@@ -132,19 +86,24 @@
         in
         {
           name = "${username}@${hostname}";
-          value = utils.user.mkHmUser {
+          value = userUtils.user.mkHmUser {
             username = username;
             userConfig = ./${userFolder}/home.nix;
           };
         })
-        (utils.lsLib.ls ./${folder}/${hostname}/users)
+        (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
       );
+
+      lsTest = folder: builtins.attrNames (builtins.readDir folder);
   in {
     homeManagerConfigurations = (folder:
-      utils.attrsets.recursiveMerge (
+      baseUtils.attrsets.recursiveMerge (
         builtins.map 
-        (hostname: mkUsers folder hostname)
-        (utils.lsLib.ls ./${folder})
+        (hostname: {
+	    name = hostname;
+	    value = mkUsers folder hostname;
+	})
+        (baseUtils.lsLib.ls ./${folder})
       )
     ) "hosts";
 
@@ -156,7 +115,7 @@
           name = hostname;
           value = mkSystem folder hostname;
         })
-        (utils.lsLib.ls ./${folder})
+        (baseUtils.lsLib.ls ./${folder})
       )) "hosts";
   };
 }

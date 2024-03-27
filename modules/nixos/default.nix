@@ -7,5 +7,6 @@
     ./hyprland
     ./network-shares
     ./nvidia
+    ./plasma-bigscreen
   ];
 }
