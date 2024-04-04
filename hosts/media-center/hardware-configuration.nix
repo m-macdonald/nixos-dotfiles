@@ -1,10 +1,5 @@
-{ config, lib, pkgs, nixos-hardware, modulesPath, ... }:
-with lib;
+{ pkgs, ... }:
 {
-#	modules = [
-#		nixos-hardware.nixosModules.raspberry-pi-4
-#	];
-
 	boot = {
 		kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 		initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage"  ];
@@ -22,11 +17,4 @@ with lib;
 		};
 	};
 
-	networking = {
-		hostName = "media-center";
-		wireless = {
-			enable = true;
-			interfaces = [ "wlan0" ];
-		};
-	};
 }
