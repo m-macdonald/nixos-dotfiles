@@ -67,6 +67,14 @@
             keyMap = "us";
         };
 
+        networking = {
+            networkmanager = {
+                enable = true;
+                wifi.backend = "iwd";
+            };
+            wireless.iwd.enable = true;
+        };
+
         programs = {
             dconf.enable = true;
             xwayland.enable = true;
