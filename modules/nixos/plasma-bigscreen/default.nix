@@ -15,14 +15,18 @@ in
 
         services.xserver = {
             enable = true;
-            displayManager = {
-                defaultSession = "plasmawayland";
+	    layout = "us";
+	    autorun = true;
+	    exportConfiguration = true;
+	    displayManager = {
+                #defaultSession = "plasmawayland";
                 sddm = {
                     enable = true;
-                    wayland.enable = true;
+#                    wayland.enable = true;
                 };
             };
             desktopManager.plasma5.enable = true;
+	    videoDrivers = [ "fbdev" ];
         };
     };
 }
