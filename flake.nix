@@ -9,15 +9,11 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
-    # nixvim.url = "github:m-macdonald/nixvim";
     nixvim = {
       url = "github:m-macdonald/nixvim-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-#    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
