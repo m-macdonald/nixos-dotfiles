@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 {
     isNormalUser = true;
-    groups = [ "input" "wheel" "docker" ];
+    groups = [ "audio" "docker" "input" "wheel" ];
     shell = pkgs.zsh;
     uid = 1000;
     isAllowedNix = true;

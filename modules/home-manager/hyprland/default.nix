@@ -13,25 +13,39 @@ let cfg = config.modules.hyprland;
     echo ''$random_background
     swww img "$random_background"
   '';
+  hyprland-init = pkgs.writeShellScriptBin "hyprland-init" ''
+    xwaylandvideobridge
+    swww-init
+  '';
 in {
   options.modules.hyprland = { 
       enable = mkEnableOption "hyprland";
       enableNvidia = mkEnableOption "Enable NVIDIA-specific patches.";
   };
 
+  imports = [
+    inputs.hyprland.homeManagerModules.default
+  ];
+
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      xwayland.enable = true;
       enableNvidiaPatches = cfg.enableNvidia;
-      systemd.enable = true;
+      systemd = {
+          enable = true;
+          # variables = [ "--all" ];
+      };
       settings = {
         "$mod" = "SUPER";
         env =
             [
+                "XDG_SESSION_DESKTOP,Hyprland"
                 "XDG_SESSION_TYPE,wayland"
-                "XDG_CURRENT_DESKTOP,hyprland"
-                "QT_QPA_PLATFORM,xcb"
+                "XDG_CURRENT_DESKTOP,Hyprland"
+                "QT_QPA_PLATFORM,wayland"
+                "GDK_BACKEND,wayland"
+                "MOZ_ENABLE_WAYLAND,1"
+                "NIXOS_OZONE_WL,1"
             ];
         monitor =
             [
@@ -43,7 +57,7 @@ in {
                 "DP-2,1"
                 "DP-1,2"
             ];
-        "exec-once" = "swww-init";
+        "exec-once" = "hyprland-init";
         input = 
             {
                 kb_layout = "us";
@@ -102,7 +116,11 @@ in {
       packages = with pkgs; [
         swww
         eww-wayland
+        hyprland-init
         swww-init
+
+        # For screensharing
+        xwaylandvideobridge
       ];
     };
   };

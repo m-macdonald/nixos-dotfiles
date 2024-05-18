@@ -14,9 +14,12 @@
       url = "github:m-macdonald/nixvim-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    hyprland = {
+        url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs : 
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, hyprland, ... }@inputs : 
   let
     volta-package = ./packages/volta.nix;
     flameshot-package = ./packages/flameshot.nix;
@@ -75,7 +78,7 @@
           xorg.libXinerama
           xorg.libXScrnSaver
           libpng
-          libpulseaudio
+          # libpulseaudio
           libvorbis
           stdenv.cc.cc.lib
           libkrb5
