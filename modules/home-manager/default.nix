@@ -14,7 +14,7 @@
 
   home.packages = with pkgs; [
     # Dev
-    dbeaver
+    dbeaver-bin
     unstable.obsidian
 
     spotify

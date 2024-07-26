@@ -10,10 +10,7 @@
       alacritty.enable = true;
       nvim.enable = true;
       zsh.enable = true;
-      hyprland = {
-        enable = true;
-        enableNvidia = false;
-      };
+      hyprland.enable = true;
       git.enable = true;
       dunst.enable = true;
       games.enable = true;
