@@ -2,22 +2,20 @@
   description = "My Nixos Configurations";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # hyprland.url = "github:hyprwm/Hyprland/";
     xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
-    # nixvim.url = "github:m-macdonald/nixvim";
     nixvim = {
       url = "github:m-macdonald/nixvim-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-#    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, ... }@inputs : 

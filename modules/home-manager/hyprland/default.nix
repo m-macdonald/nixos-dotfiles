@@ -16,14 +16,12 @@ let cfg = config.modules.hyprland;
 in {
   options.modules.hyprland = { 
       enable = mkEnableOption "hyprland";
-      enableNvidia = mkEnableOption "Enable NVIDIA-specific patches.";
   };
 
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
-      enableNvidiaPatches = cfg.enableNvidia;
       systemd.enable = true;
       settings = {
         "$mod" = "SUPER";
@@ -101,7 +99,7 @@ in {
     home = {
       packages = with pkgs; [
         swww
-        eww-wayland
+        eww
         swww-init
       ];
     };
