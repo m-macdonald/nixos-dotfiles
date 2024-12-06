@@ -3,6 +3,7 @@
   nix = {
     settings = {
       auto-optimise-store = true;
+# TODO: Remove the hardcoding here
       allowed-users = [ "maddux" ];
     };
     gc = {
