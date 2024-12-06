@@ -76,6 +76,7 @@
     	};
 	pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
 	pkgs = pkgUtils.buildPkgs;
+#	pkgs = nixpkgs.legacyPackages.${system};
 	lib = pkgs.lib;
     in builtins.listToAttrs
       (
@@ -94,15 +95,13 @@
         (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
       );
 
-      lsTest = folder: builtins.attrNames (builtins.readDir folder);
+	
+	pkgs = nixpkgs.legacyPackages."aarch64-linux";
   in {
     homeManagerConfigurations = (folder:
       baseUtils.attrsets.recursiveMerge (
         builtins.map 
-        (hostname: {
-	    name = hostname;
-	    value = mkUsers folder hostname;
-	})
+	(hostname: mkUsers folder hostname)
         (baseUtils.lsLib.ls ./${folder})
       )
     ) "hosts";

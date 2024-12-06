@@ -7,7 +7,6 @@
             nvim.enable = true;
             zsh.enable = true;
             git.enable = true;
-            dunst.enable = true;
             tmux.enable = true;
         };
     };

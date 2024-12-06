@@ -16,16 +16,16 @@ in
         services.xserver = {
             enable = true;
 	    layout = "us";
-	    autorun = true;
+	    #autorun = true;
 	    exportConfiguration = true;
 	    displayManager = {
-                #defaultSession = "plasmawayland";
+#                defaultSession = "plasmawayland";
                 sddm = {
                     enable = true;
-#                    wayland.enable = true;
+                    wayland.enable = true;
                 };
             };
-            desktopManager.plasma5.enable = true;
+            #desktopManager.plasma5.bigscreen.enable = true;
 	    videoDrivers = [ "fbdev" ];
         };
     };
