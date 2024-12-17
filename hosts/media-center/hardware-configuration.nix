@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
 	boot = {
-		kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+#		kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 		initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage"  ];
 		loader = {
 			grub.enable = false;
@@ -22,11 +22,13 @@
 			apply-overlays-dtmerge.enable = true;
 			fkms-3d.enable = true;
 		};
-/*		deviceTree = {
+		# The RPI 4 module takes care of this
+		/*
+		deviceTree = {
 			enable = true;
 			filter = "*rpi-4-*.dtb";
 		};
-*/
+		*/
 	};
 
 	console.enable = false;

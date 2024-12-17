@@ -101,6 +101,10 @@ in {
         swww
         eww
         swww-init
+    	rofi
+	#Snipping tool
+	flameshot
+	grim
       ];
     };
   };

@@ -5,7 +5,7 @@ let
 in
 {
     options.modules.plasmaBigScreen = {
-        enable = mkEnableOption "Enable Plasma Big Screen";
+        enable = mkEnableOption "Plasma Big Screen";
     };
 
     config = mkIf cfg.enable {
@@ -22,10 +22,10 @@ in
 #                defaultSession = "plasmawayland";
                 sddm = {
                     enable = true;
-                    wayland.enable = true;
+#                    wayland.enable = true;
                 };
             };
-            #desktopManager.plasma5.bigscreen.enable = true;
+            desktopManager.plasma5.bigscreen.enable = true;
 	    videoDrivers = [ "fbdev" ];
         };
     };
