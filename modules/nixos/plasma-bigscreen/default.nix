@@ -9,7 +9,8 @@ in
     };
 
     config = mkIf cfg.enable {
-        environment.systemPackages = with pkgs.libsForQt5; [
+/*
+	environment.systemPackages = with pkgs.libsForQt5; [
             plasma-bigscreen
         ];
 
@@ -29,4 +30,23 @@ in
 	    videoDrivers = [ "fbdev" ];
         };
     };
+*/
+/**/
+
+	services.cage = {
+	    user = "kodi";
+	    program = "${pkgs.kodi-wayland}/bin/kodi-standalone";
+	    enable = true;
+	};
+/*
+	systemd.services."cage-tty1".after = [
+		"network-online.target"
+		"systemd-resolved.service"
+	];
+*/
+	users.extraUsers.kodi.isNormalUser = true;
+	hardware.opengl.enable = true;
+    };
+
+/**/
 }
