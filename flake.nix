@@ -32,7 +32,6 @@
       system = import ./${folder}/${hostname}/_localSystem.nix;
 	pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
 	pkgs = pkgUtils.buildPkgs;
-#	pkgs = nixpkgs.legacyPackages.${system};
 	lib = pkgs.lib;
 	userUtils = import ./utils/user {
      	 inherit system nixpkgs pkgs home-manager lib inputs;
@@ -74,7 +73,6 @@
     	};
 	pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
 	pkgs = pkgUtils.buildPkgs;
-#	pkgs = nixpkgs.legacyPackages.${system};
 	lib = pkgs.lib;
     in builtins.listToAttrs
       (
