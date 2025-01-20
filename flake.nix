@@ -2,11 +2,11 @@
   description = "My Nixos Configurations";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.05";
+    nixpkgs.url = "nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -16,9 +16,10 @@
       url = "github:m-macdonald/nixvim-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    arion.url = "github:hercules-ci/arion";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, ... }@inputs : 
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, arion, ... }@inputs : 
   let
 	nixlib = nixpkgs.lib;
 

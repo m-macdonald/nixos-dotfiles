@@ -14,7 +14,7 @@ in
 
   config = mkIf cfg.enable {
     services.xserver.videoDrivers = [ "nvidia" ];
-
+/*
     environment = {
       variables = {
         WLR_BACKEND = "vulkan";
@@ -26,17 +26,20 @@ in
         vulkan-tools
       ];
     };
-
+*/
     hardware = {
-      opengl = {
-        extraPackages = with pkgs; [
+      graphics = {
+      	enable = true;
+	extraPackages = with pkgs; [
           nvidia-vaapi-driver
         ];
       };
       nvidia = {
-        open = true;
+        open = false;
         powerManagement.enable = false;
         modesetting.enable = true;
+	nvidiaSettings = true;
+	package = config.boot.kernelPackages.nvidiaPackages.stable;
       };
     };
   };

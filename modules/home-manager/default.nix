@@ -7,6 +7,8 @@
     ./games
     ./git
     ./hyprland
+    ./kodi
+    ./mkv
     ./nvim
     ./tmux
     ./zsh

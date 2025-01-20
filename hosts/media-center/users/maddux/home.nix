@@ -4,10 +4,12 @@
     config = {
         modules = {
             alacritty.enable = false;
-            nvim.enable = false;
-            zsh.enable = true;
             git.enable = true;
+	    kodi.enable = true;
+	    mkv.enable = true;
+            nvim.enable = false;
             tmux.enable = false;
+            zsh.enable = true;
         };
     };
 }

@@ -9,9 +9,9 @@ in
     };
 
     config = mkIf cfg.enable {
-        environment.systemPackages = with pkgs.libsForQt5; [
-            plasma-bigscreen
-        ];
+        environment.systemPackages = with pkgs; [
+        	jellyfin-media-player
+	];
 
         services.xserver = {
             enable = true;
@@ -26,7 +26,6 @@ in
                 };
             };
             desktopManager.plasma5.bigscreen.enable = true;
-	    videoDrivers = [ "fbdev" ];
         };
     };
 }

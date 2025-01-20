@@ -5,10 +5,14 @@
     ];
 
     modules = {
-        plasmaBigScreen.enable = true;
+    	kodi.enable = true;
+	nvidia.enable = true;
+	podman.enable = true;
+	rdp.enable = true;
     };
 
     environment.systemPackages = with pkgs; [ neovim git ];
+boot.loader.systemd-boot.enable = true;
 
     services.openssh = {
         enable = true;
@@ -19,7 +23,6 @@
 
 	networking = {
 		hostName = "media-center";
-        networkmanager.enable = true;
 	};
 
     hardware.enableRedistributableFirmware = true;
