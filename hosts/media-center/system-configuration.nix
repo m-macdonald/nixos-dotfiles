@@ -6,13 +6,13 @@
 
     modules = {
     	kodi.enable = true;
-	nvidia.enable = true;
-	podman.enable = true;
-	rdp.enable = true;
+        nvidia.enable = true;
+        podman.enable = true;
+        rdp.enable = true;
     };
 
     environment.systemPackages = with pkgs; [ neovim git ];
-boot.loader.systemd-boot.enable = true;
+    boot.loader.systemd-boot.enable = true;
 
     services.openssh = {
         enable = true;
