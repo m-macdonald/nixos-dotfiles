@@ -115,8 +115,13 @@
                                     keyFile = "/var/lib/sops-nix/key.txt";
                                     generateKey = true;
                                 };
-                                secrets."users/maddux/password" = {
+                                secrets = {
+                                    "users/maddux/password" = {
                                         neededForUsers = true;
+                                    };
+                                    "vpn/home_server/public_key" = {};
+                                    "vpn/home_server/private_key" = {};
+                                    "vpn/home_server/preshared_key" = {};
                                 };
                             };
                             users = {
