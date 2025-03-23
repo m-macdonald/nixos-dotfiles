@@ -1,9 +1,9 @@
 keys:
-  - &laptop_maddux age1qrwmet65j048nzg29n7u8yl50vvpr2w57nnqdnxe3hfxek7jegcq4yjz68
-  - &host_laptop age17yqaa9ju8qty8vw9asz9aes3v5ryslqfzaw9lewpf6lhycgemussftwtef
+  - &host_laptop age1a39uu7zpq79y44e4005t3s5tk8uhnpe7lp66zjvsx4d0z2qxwc5sylh5rq
+  - &host_media-center age1vx72v97nzylnhm7lla7m2zhg44cwtzn86nupfhqp6hjwhnx2ssfs7aymtc
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
-        - *laptop_maddux
         - *host_laptop
+        - *host_media-center
