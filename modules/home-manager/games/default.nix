@@ -13,6 +13,7 @@ in {
             gamemode
             # Final Fantasy XIV
             xivlauncher
+    	    discord
         ];
     };
 }

@@ -7,25 +7,19 @@
     ./games
     ./git
     ./hyprland
+    ./kodi
+    ./mkv
     ./nvim
     ./tmux
     ./zsh
+    ./dev
+    ./spotify
   ];
 
   home.packages = with pkgs; [
-    # Dev
-    dbeaver-bin
-    unstable.obsidian
-
-    spotify
-    discord
-    rofi
     # TODO: Bitwarden launches to a blank screen. Find a fix. In the meantime, I'm using the browser extension.
 #    bitwarden
     # Utilities
     unzipNLS
-    #Snipping tool
-    flameshot
-    grim
   ];
 }
