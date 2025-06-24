@@ -31,7 +31,39 @@
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
+    # networking.useDHCP = false;
+    # networking.interfaces.enp13s0.useDHCP = true;
+
+    networking = {
+        networkmanager.enable = false;
+        useNetworkd = true;
+        useDHCP = false;
+    };
+
+    systemd.network = {
+        enable = true;
+        networks = {
+            "10-eth" = {
+                matchConfig.Name = "enp13s0";
+                networkConfig = {
+                    DHCP = "ipv4";
+                    IPv6AcceptRA = false;
+                };
+                dhcpV4Config = {
+                    UseDNS = true;
+                    UseRoutes = true;
+                    UseHostname = false;
+                };
+                # linkConfig.RequiredForOnline = "no";
+            };
+        };
+    };
+
+    services.resolved = {
+        enable = true;
+        # TODO: enable once config is working
+        # fallbackDns = [ "1.1.1.1" ];
+    };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
