@@ -27,11 +27,39 @@
     { device = "/.swapfile"; }
   ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
+    networking = {
+        networkmanager.enable = false;
+        useNetworkd = true;
+        useDHCP = false;
+    };
+
+    systemd.network = {
+        enable = true;
+        networks = {
+            "10-eth" = {
+                matchConfig.Name = "enp13s0";
+                networkConfig = {
+                    DHCP = "ipv4";
+                    IPv6AcceptRA = false;
+                };
+                dhcpV4Config = {
+                    UseDNS = true;
+                    UseDomains = true;
+                    UseRoutes = true;
+                    UseHostname = false;
+                };
+            };
+        };
+    };
+
+    services.resolved = {
+        enable = true;
+        fallbackDns = [ "1.1.1.1" ];
+        extraConfig = ''
+            Cache=yes
+            ReadEtcHosts=yes
+        '';
+    };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

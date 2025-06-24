@@ -8,10 +8,11 @@ in {
     config = mkIf cfg.enable {
         home.packages = with pkgs; [
             steam
+            bottles
 # Fixes some issues with games running on wayland/Hyprland
             gamescope
             gamemode
-            # Final Fantasy XIV
+            
             xivlauncher
     	    discord
         ];
