@@ -1,18 +1,18 @@
 { lib, config, pkgs, inputs, ... }: 
 with lib;
 let cfg = config.modules.hyprland;
-  swww-init = pkgs.writeShellScriptBin "swww-init" ''
-    #! /usr/bin/env bash
-    files=(/mnt/nas/media/images/pixiv/*)
-
-    random_background=''${files[RANDOM % ''${#files[@]}]}
-
-    if ! ps -ef | grep -v grep | grep -q "swww-daemon"; then
-      swww init
-    fi
-    echo ''$random_background
-    swww img "$random_background"
-  '';
+  # swww-init = pkgs.writeShellScriptBin "swww-init" ''
+  #   #! /usr/bin/env bash
+  #   files=(/mnt/nas/media/images/pixiv/*)
+  #
+  #   random_background=''${files[RANDOM % ''${#files[@]}]}
+  #
+  #   if ! ps -ef | grep -v grep | grep -q "swww-daemon"; then
+  #     swww init
+  #   fi
+  #   echo ''$random_background
+  #   swww img "$random_background"
+  # '';
 in {
   options.modules.hyprland = { 
       enable = mkEnableOption "hyprland";
@@ -41,7 +41,7 @@ in {
                 "DP-2,1"
                 "DP-1,2"
             ];
-        "exec-once" = "swww-init";
+        # "exec-once" = "swww-init";
         input = 
             {
                 kb_layout = "us";
@@ -98,9 +98,9 @@ in {
     };
     home = {
       packages = with pkgs; [
-        swww
+        # swww
         eww
-        swww-init
+        # swww-init
     	rofi
 	#Snipping tool
 	flameshot
