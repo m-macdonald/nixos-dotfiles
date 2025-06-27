@@ -23,6 +23,8 @@ in {
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
+      package = null;
+      portalPackage = null;
       settings = {
         "$mod" = "SUPER";
         env =
@@ -103,8 +105,8 @@ in {
         # swww-init
     	rofi
 	#Snipping tool
-	flameshot
-	grim
+	# flameshot
+	# grim
       ];
     };
   };
