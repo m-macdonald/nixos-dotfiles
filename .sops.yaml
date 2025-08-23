@@ -1,5 +1,6 @@
 keys:
   - &host_laptop age1a39uu7zpq79y44e4005t3s5tk8uhnpe7lp66zjvsx4d0z2qxwc5sylh5rq
+  - &host_automata age1m9faped3zgvvnz285janjgfg6d9c43wy67uzs4yggugp6augxapqdn7fdz
   - &host_media-center age1vx72v97nzylnhm7lla7m2zhg44cwtzn86nupfhqp6hjwhnx2ssfs7aymtc
   - &host_blocky age1fw03qngjkn9ry79agqhqv365scf0fhc2h0wd2k9y2ksnszfd432swn3uf5
 creation_rules:
@@ -9,3 +10,4 @@ creation_rules:
         - *host_laptop
         - *host_media-center
         - *host_blocky
+        - *host_automata
