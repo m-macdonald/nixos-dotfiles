@@ -32,22 +32,6 @@
             swww = prev.callPackage swww-package {};
         };
 
-        override-steam = pkgs: 
-            pkgs.steam.override {
-                extraPkgs = pkgs: with pkgs; [
-                    xorg.libXcursor
-                        xorg.libXi
-                        xorg.libXinerama
-                        xorg.libXScrnSaver
-                        libpng
-                        libpulseaudio
-                        libvorbis
-                        stdenv.cc.cc.lib
-                        libkrb5
-                        keyutils
-                ];
-            };
-
         override-nur = pkgs:
             import nur { 
                 inherit pkgs;
@@ -59,7 +43,6 @@
             config = { 
                 allowUnfree = true;
                 packageOverrides = pkgs: {
-                    steam = override-steam pkgs;
                     nur = override-nur pkgs;
                 };
             };

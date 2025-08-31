@@ -29,8 +29,6 @@ in {
         "$mod" = "SUPER";
         env =
             [
-                "XDG_SESSION_TYPE,wayland"
-                "XDG_CURRENT_DESKTOP,hyprland"
                 "QT_QPA_PLATFORM,xcb"
             ];
         monitor =
@@ -96,8 +94,14 @@ in {
                 "$mod, mouse:272, movewindow"
                 "$mod, mouse:273, resizewindow"
             ];
+        debug = 
+            {
+                "full_cm_proto" = true;
+            };
       };
     };
+
+    home.sessionVariables.NIXOS_OZONE_WL = "1";
     home = {
       packages = with pkgs; [
         # swww

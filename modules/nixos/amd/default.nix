@@ -9,7 +9,16 @@ in
     };
 
     config = mkIf cfg.enable {
-        boot.initrd.kernelModules = [ "amdgpu" ];
-        services.xserver.videoDrivers = [ "amdgpu" ];
+        play = {
+            amd.enable = true;
+            steam = {
+                enable = true;
+                extraCompatPackages = with pkgs; [
+                    proton-ge-bin
+                ];
+            };
+            gamemode.enable = true;
+            lutris.enable = true;
+        };
     };
 }
