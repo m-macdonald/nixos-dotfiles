@@ -9,6 +9,7 @@
     ./hyprland
     ./kodi
     ./mkv
+    ./niri
     ./nvim
     ./tmux
     ./zsh

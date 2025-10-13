@@ -9,6 +9,7 @@
     modules = {
       alacritty.enable = true;
       nvim.enable = true;
+      niri.enable = true;
       zsh.enable = true;
       hyprland.enable = true;
       git.enable = true;

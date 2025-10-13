@@ -158,7 +158,7 @@ in {
             # heroic
             # bottles
             
-            xivlauncher
+            # xivlauncher
     	    discord
             cockatrice
         ];

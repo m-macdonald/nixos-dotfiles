@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, system, nur }:
+{ nixpkgs, nixpkgs-unstable, system, nur, niri }:
 {
     buildPkgs = 
     let
@@ -12,6 +12,7 @@
 #      import ./overlays/flameshot
             overlay-flameshot
             overlay-swww
+            niri.overlays.niri
         ];
         overlay-unstable = final: prev: {
             unstable = import nixpkgs-unstable {
@@ -49,5 +50,3 @@
             overlays = overlays;
         };
 }
-
-
