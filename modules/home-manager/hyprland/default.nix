@@ -1,18 +1,18 @@
 { lib, config, pkgs, inputs, ... }: 
 with lib;
 let cfg = config.modules.hyprland;
-  swww-init = pkgs.writeShellScriptBin "swww-init" ''
-    #! /usr/bin/env bash
-    files=(/mnt/nas/media/images/pixiv/*)
-
-    random_background=''${files[RANDOM % ''${#files[@]}]}
-
-    if ! ps -ef | grep -v grep | grep -q "swww-daemon"; then
-      swww init
-    fi
-    echo ''$random_background
-    swww img "$random_background"
-  '';
+  # swww-init = pkgs.writeShellScriptBin "swww-init" ''
+  #   #! /usr/bin/env bash
+  #   files=(/mnt/nas/media/images/pixiv/*)
+  #
+  #   random_background=''${files[RANDOM % ''${#files[@]}]}
+  #
+  #   if ! ps -ef | grep -v grep | grep -q "swww-daemon"; then
+  #     swww init
+  #   fi
+  #   echo ''$random_background
+  #   swww img "$random_background"
+  # '';
 in {
   options.modules.hyprland = { 
       enable = mkEnableOption "hyprland";
@@ -23,12 +23,12 @@ in {
       enable = true;
       xwayland.enable = true;
       systemd.enable = true;
+      package = null;
+      portalPackage = null;
       settings = {
         "$mod" = "SUPER";
         env =
             [
-                "XDG_SESSION_TYPE,wayland"
-                "XDG_CURRENT_DESKTOP,hyprland"
                 "QT_QPA_PLATFORM,xcb"
             ];
         monitor =
@@ -41,7 +41,7 @@ in {
                 "DP-2,1"
                 "DP-1,2"
             ];
-        "exec-once" = "swww-init";
+        # "exec-once" = "swww-init";
         input = 
             {
                 kb_layout = "us";
@@ -94,17 +94,23 @@ in {
                 "$mod, mouse:272, movewindow"
                 "$mod, mouse:273, resizewindow"
             ];
+        debug = 
+            {
+                "full_cm_proto" = true;
+            };
       };
     };
+
+    home.sessionVariables.NIXOS_OZONE_WL = "1";
     home = {
       packages = with pkgs; [
-        swww
+        # swww
         eww
-        swww-init
+        # swww-init
     	rofi
 	#Snipping tool
-	flameshot
-	grim
+	# flameshot
+	# grim
       ];
     };
   };

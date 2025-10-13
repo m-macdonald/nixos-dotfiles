@@ -2,15 +2,14 @@
     description = "My Nixos Configurations";
 
     inputs = {
-        nixpkgs.url = "nixpkgs/nixos-24.11";
+        nixpkgs.url = "nixpkgs/nixos-25.05";
         nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
         nur.url = "github:nix-community/NUR";
         home-manager = {
-            url = "github:nix-community/home-manager/release-24.11";
+            url = "github:nix-community/home-manager/release-25.05";
             inputs.nixpkgs.follows = "nixpkgs";
         };
         nixos-hardware.url = "github:NixOS/nixos-hardware";
-        # hyprland.url = "github:hyprwm/Hyprland/";
         xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
         nixvim = {
             url = "github:m-macdonald/nixvim-flake";
@@ -21,9 +20,17 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
         arion.url = "github:hercules-ci/arion";
+        play-nix = {
+            url = "github:TophC7/play.nix";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+        chaotic = {
+            url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, ... }@inputs : 
+    outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, play-nix, ... }@inputs : 
         let
             nixlib = nixpkgs.lib;
 
@@ -33,11 +40,9 @@
 
             mkSystem = folder: hostname:
                 let
-                    systemPath = ./${folder}/${hostname};
                     system = import ./${folder}/${hostname}/_localSystem.nix;
                     pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
                     pkgs = pkgUtils.buildPkgs;
-                    #	pkgs = nixpkgs.legacyPackages.${system};
                     lib = pkgs.lib;
                     userUtils = import ./utils/user {
                         inherit system nixpkgs pkgs home-manager lib inputs;
@@ -52,6 +57,7 @@
                     inherit system; 
 
                     modules = [
+                        play-nix.nixosModules.play
                         sops-nix.nixosModules.sops
                         { networking.hostName = hostname; }
                         systemConfigurationPath
@@ -101,7 +107,6 @@
                     };
                     pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
                     pkgs = pkgUtils.buildPkgs;
-                    #	pkgs = nixpkgs.legacyPackages.${system};
                     lib = pkgs.lib;
                 in builtins.listToAttrs
                 (
@@ -119,9 +124,6 @@
                         })
                     (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
                 );
-
-
-            pkgs = nixpkgs.legacyPackages."aarch64-linux";
         in {
             homeManagerConfigurations = (folder:
                 baseUtils.attrsets.recursiveMerge (
