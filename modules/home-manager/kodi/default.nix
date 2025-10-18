@@ -9,7 +9,7 @@ in {
 
 	config = mkIf cfg.enable {
 		programs.kodi = {
-			enable = true;
+			enable = false;
 			package = pkgs.kodi.withPackages (p: [
 					p.jellyfin
 					p.youtube

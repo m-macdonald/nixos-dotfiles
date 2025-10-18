@@ -9,12 +9,13 @@ let
 			'';
 		});
 	libblurayBroke = (pkgs.libbluray.override {
-		withAACS = false;
-		withBDplus = false;
+		withAACS = true;
+		withBDplus = true;
 		withJava = true;
+    });
 		# libaacs = modifiedMkv;
 		# libbdplus = modifiedMkv;
-		libaacs = pkgs.libaacs.overrideAttrs (accsPrev: {
+		# libaacs = pkgs.libaacs.overrideAttrs (accsPrev: {
             # nativeBuildInputs = with pkgs; [makemkv] ++ (prev.nativeBuildInputs or []);
             # buildInputs = (accsPrev.buildInputs or []) ++ [pkgs.makemkv];
             # postInstall = (accsPrev.postInstall or "") + ''
@@ -32,8 +33,8 @@ let
             #     rm $out/lib/libaacs.so.0
             #     ln -s ${pkgs.makemkv}/lib/libmmbd.so.0 $out/lib/libaacs.so.0
             # '';
-		});
-		libbdplus = pkgs.libbdplus.overrideAttrs (bdPlusPrev: {
+		# });
+		# libbdplus = pkgs.libbdplus.overrideAttrs (bdPlusPrev: {
             # nativeBuildInputs = with pkgs; [makemkv] ++ (prev.nativeBuildInputs or []);
             # buildInputs = (bdPlusPrev.buildInputs or []) ++ [pkgs.makemkv];
             # postInstall = (bdPlusPrev.postInstall or "") + ''
@@ -50,13 +51,13 @@ let
    #          doCheck = false;
    #          doInstallCheck = false;
    #          dontCheck = true;
-		});
-	}).overrideAttrs (prev: {
-        buildInputs = (prev.buildInputs or []) ++ [pkgs.makemkv];
-        postInstall = (prev.postInstall or "") + ''
-            patchelf --add-rpath "${pkgs.makemkv}/lib/" $out/lib/libbluray.so
-        '';
-    });
+	# 	});
+	# }).overrideAttrs (prev: {
+        # buildInputs = (prev.buildInputs or []) ++ [pkgs.makemkv];
+        # postInstall = (prev.postInstall or "") + ''
+        #     patchelf --add-rpath "${pkgs.makemkv}/lib/" $out/lib/libbluray.so
+        # '';
+    # });
     # wrappedVlc = pkgs.symlinkJoin {
     #     name = "vlc-mmbd";
     #     paths = [ pkgs.vlc ];
@@ -71,14 +72,15 @@ let
     #             ]}"
     #     '';
     # };
-	vlc = (pkgs.vlc.override { libbluray = libblurayBroke; }).overrideAttrs(prev: { 
-        # doCheck = false;
-        # doInstallCheck = false;
-        # dontCheck = true;
-        # postFixup = (prev.postFixup or "") + ''
-        #     ln -s ${pkgs.makemkv}/lib/libmmbd.so.0 $out/lib
-        # '';
-    });
+	vlc = (pkgs.vlc.override { libbluray = libblurayBroke; });
+    #         .overrideAttrs(prev: { 
+    #     # doCheck = false;
+    #     # doInstallCheck = false;
+    #     # dontCheck = true;
+    #     # postFixup = (prev.postFixup or "") + ''
+    #     #     ln -s ${pkgs.makemkv}/lib/libmmbd.so.0 $out/lib
+    #     # '';
+    # });
 in {
 	options.modules.mkv = {
 		enable = mkEnableOption "disk ripping";
