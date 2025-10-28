@@ -100,6 +100,7 @@ in {
 
     home.packages = with pkgs; [
         xwayland-satellite
+        gnome-keyring
     ];
 
     xdg.portal = {
@@ -107,8 +108,7 @@ in {
 
         extraPortals = with pkgs; [
             xdg-desktop-portal-gtk
-            xdg-desktop-portal-gnome
-            gnome-keyring
+            xdg-desktop-portal-wlr
         ]; 
     };
   };
