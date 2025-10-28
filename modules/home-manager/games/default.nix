@@ -47,7 +47,7 @@ in {
                 baseOptions = {
                     # "fsr-upscaling" = true;
                     # Overrides monitor derived-width
-                    # "output-width" = 2560;
+                    "force-grab-cursor" = true;
                 };
             };
 
@@ -56,7 +56,7 @@ in {
                     enable = true;
 
                     # command = "steam -bigpicture -tenfoot";
-                    command = "/run/current-system/sw/bin/steam -bigpicture -tenfoot";
+                    command = "/run/current-system/sw/bin/steam -bigpicture";
                     # package = pkgs.steam;
 
                     useWSI = false;
@@ -158,7 +158,7 @@ in {
             # heroic
             # bottles
             
-            xivlauncher
+            # xivlauncher
     	    discord
             cockatrice
         ];

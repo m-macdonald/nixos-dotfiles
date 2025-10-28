@@ -5,6 +5,7 @@
         ./fonts.nix
         ./nix.nix
         ./shells.nix
+        ./polkit-agent.nix
     ];
 
     environment.defaultPackages = [ ];

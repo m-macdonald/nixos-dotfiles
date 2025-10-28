@@ -13,6 +13,7 @@ in {
       shellAliases = {
         ls = "ls -a";
         rebuild = "sudo nixos-rebuild switch --flake ~dots/.#\${hostname}";
+        test = "sudo nixos-rebuild test --flake ~dots/.#\${hostname}";
         rebuild-home = "nix build ~dots/#homeManagerConfigurations.$USER@$(hostname).activationPackage && ~dots/result/activate";
         shell = "fn() { nix-shell ~dots/shells/$1.nix };fn";
         lock-update = "fn() { pushd ~dots && nix flake lock --update-input $1 && popd }";

@@ -28,9 +28,13 @@
             url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        niri = {
+            url = "github:sodiboo/niri-flake";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, play-nix, ... }@inputs : 
+    outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, play-nix, niri, ... }@inputs : 
         let
             nixlib = nixpkgs.lib;
 
@@ -41,7 +45,7 @@
             mkSystem = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
+                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
                     pkgs = pkgUtils.buildPkgs;
                     lib = pkgs.lib;
                     userUtils = import ./utils/user {
@@ -105,7 +109,7 @@
                     userUtils = import ./utils/user {
                         inherit system nixpkgs pkgs home-manager lib inputs;
                     };
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur; };
+                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
                     pkgs = pkgUtils.buildPkgs;
                     lib = pkgs.lib;
                 in builtins.listToAttrs

@@ -9,11 +9,13 @@
     modules = {
       alacritty.enable = true;
       nvim.enable = true;
+      niri.enable = true;
       zsh.enable = true;
       hyprland.enable = true;
       git.enable = true;
       dunst.enable = true;
       games.enable = true;
+      rdp.client.enable = true;
       tmux.enable = true;
     };
   };
