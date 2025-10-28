@@ -14,6 +14,7 @@
     ./tmux
     ./zsh
     ./dev
+    ./rdp
     ./spotify
   ];
 

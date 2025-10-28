@@ -15,6 +15,7 @@
       git.enable = true;
       dunst.enable = true;
       games.enable = true;
+      rdp.client.enable = true;
       tmux.enable = true;
     };
   };
