@@ -1,6 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, system, nur, niri }:
-{
-    buildPkgs = 
+{ inputs, ...}:
     let
         volta-package = ../../packages/volta.nix;
         flameshot-package = ../../packages/flameshot.nix;
@@ -12,11 +10,11 @@
 #      import ./overlays/flameshot
             overlay-flameshot
             overlay-swww
-            niri.overlays.niri
+            inputs.niri.overlays.niri
         ];
         overlay-unstable = final: prev: {
-            unstable = import nixpkgs-unstable {
-                inherit system;
+            unstable = import inputs.nixpkgs-unstable {
+                system = final.stdenv.hostPlatform.system;
                 config.allowUnfree = true;
             };
         };
@@ -34,19 +32,29 @@
         };
 
         override-nur = pkgs:
-            import nur { 
+            import inputs.nur { 
                 inherit pkgs;
-                nurpkgs = nixpkgs.legacyPackages."${system}";
+                nurpkgs = inputs.nixpkgs.legacyPackages."${pkgs.system}";
             };
-    in 
-        import nixpkgs {
-            inherit system;
-            config = { 
+in
+{
+        nixpkgs = {
+            inherit overlays;
+            config = {
                 allowUnfree = true;
                 packageOverrides = pkgs: {
                     nur = override-nur pkgs;
                 };
             };
-            overlays = overlays;
         };
+        # import nixpkgs {
+        #     inherit system;
+        #     config = { 
+        #         allowUnfree = true;
+        #         packageOverrides = pkgs: {
+        #             nur = override-nur pkgs;
+        #         };
+        #     };
+        #     overlays = overlays;
+        # };
 }

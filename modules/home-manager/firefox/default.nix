@@ -11,7 +11,7 @@
         isDefault = true;
         extensions = with pkgs; [
           # Bitwarden for password management
-          nur.repos.rycee.firefox-addons.bitwarden
+          # nur.repos.rycee.firefox-addons.bitwarden
         ];
       };
     };

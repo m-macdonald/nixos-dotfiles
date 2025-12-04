@@ -2,11 +2,14 @@
     description = "My Nixos Configurations";
 
     inputs = {
-        nixpkgs.url = "nixpkgs/nixos-25.05";
+        nixpkgs.url = "nixpkgs/nixos-25.11";
         nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-        nur.url = "github:nix-community/NUR";
+        nur = {
+            url = "github:nix-community/NUR";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
         home-manager = {
-            url = "github:nix-community/home-manager/release-25.05";
+            url = "github:nix-community/home-manager/release-25.11";
             inputs.nixpkgs.follows = "nixpkgs";
         };
         nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -19,18 +22,17 @@
             url = "github:Mic92/sops-nix";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        arion.url = "github:hercules-ci/arion";
         play-nix = {
-            url = "github:TophC7/play.nix";
-            inputs.nixpkgs.follows = "nixpkgs";
+            url = "github:TophC7/play.nix/fea2ccf";
+            # inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         chaotic = {
             url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-            inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         niri = {
             url = "github:sodiboo/niri-flake";
-            inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
     };
 
@@ -45,11 +47,15 @@
             mkSystem = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    pkgs = pkgUtils.buildPkgs;
-                    lib = pkgs.lib;
+                    # pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
+                    # TODO: Remove this and consolidate package configuration
+                    pkgs = import nixpkgs {
+                        inherit system;
+                        config.allowUnfree = true;
+                    };
+                    lib = nixpkgs.lib;
                     userUtils = import ./utils/user {
-                        inherit system nixpkgs pkgs home-manager lib inputs;
+                        inherit nixpkgs system pkgs home-manager lib inputs;
                     };
                     additionalModulesPath = ./${folder}/${hostname}/additional-modules.nix;
                     additionalModulesExist = builtins.pathExists additionalModulesPath;
@@ -61,6 +67,7 @@
                     inherit system; 
 
                     modules = [
+                        (import ./utils/packages)
                         play-nix.nixosModules.play
                         sops-nix.nixosModules.sops
                         { networking.hostName = hostname; }
@@ -91,7 +98,7 @@
                                         in
                                             {
                                             name = username;
-                                            value = userUtils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
+                                            value = userUtils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit inputs pkgs; }));
                                         }
                                     )
                                     (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
@@ -100,18 +107,22 @@
                         })
 
                     ] ++ additionalModules;
-                    specialArgs = { inherit inputs pkgs; };
+                    specialArgs = { inherit inputs; };
                 };
 
             mkUsers = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    userUtils = import ./utils/user {
-                        inherit system nixpkgs pkgs home-manager lib inputs;
+                    # TODO: Remove this and consolidate package configuration
+                    pkgs = import nixpkgs {
+                        inherit system;
+                        config.allowUnfree = true;
                     };
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    pkgs = pkgUtils.buildPkgs;
-                    lib = pkgs.lib;
+                    userUtils = import ./utils/user {
+                        inherit nixpkgs system pkgs home-manager lib inputs;
+                    };
+                    # pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
+                    lib = nixpkgs.lib;
                 in builtins.listToAttrs
                 (
                     map 
