@@ -2,11 +2,14 @@
     description = "My Nixos Configurations";
 
     inputs = {
-        nixpkgs.url = "nixpkgs/nixos-25.05";
+        nixpkgs.url = "nixpkgs/nixos-25.11";
         nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-        nur.url = "github:nix-community/NUR";
+        nur = {
+            url = "github:nix-community/NUR";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
         home-manager = {
-            url = "github:nix-community/home-manager/release-25.05";
+            url = "github:nix-community/home-manager/release-25.11";
             inputs.nixpkgs.follows = "nixpkgs";
         };
         nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -19,48 +22,43 @@
             url = "github:Mic92/sops-nix";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        arion.url = "github:hercules-ci/arion";
         play-nix = {
-            url = "github:TophC7/play.nix";
-            inputs.nixpkgs.follows = "nixpkgs";
+            url = "github:TophC7/play.nix/fea2ccf";
         };
         chaotic = {
             url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-            inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         niri = {
             url = "github:sodiboo/niri-flake";
-            inputs.nixpkgs.follows = "nixpkgs";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
     };
 
     outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, play-nix, niri, ... }@inputs : 
         let
-            nixlib = nixpkgs.lib;
+            lib = nixpkgs.lib;
 
-            baseUtils = import ./utils/base {
-                lib = nixlib;
-            };
+            baseUtils = import ./utils/base { inherit lib; };
 
             mkSystem = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    pkgs = pkgUtils.buildPkgs;
-                    lib = pkgs.lib;
+                    pkgs = import ./utils/packages { inherit system nixpkgs inputs; };
                     userUtils = import ./utils/user {
-                        inherit system nixpkgs pkgs home-manager lib inputs;
+                        inherit nixpkgs system pkgs home-manager lib inputs;
                     };
                     additionalModulesPath = ./${folder}/${hostname}/additional-modules.nix;
                     additionalModulesExist = builtins.pathExists additionalModulesPath;
-                    additionalModules = nixlib.lists.optionals additionalModulesExist (import additionalModulesPath inputs).modules;
+                    additionalModules = lib.lists.optionals additionalModulesExist (import additionalModulesPath inputs).modules;
                     systemConfigurationPath = ./${folder}/${hostname}/system-configuration.nix;
                     hardwareConfigurationPath = ./${folder}/${hostname}/hardware-configuration.nix;
-                in nixlib.nixosSystem
+                in lib.nixosSystem
                 {
                     inherit system; 
 
                     modules = [
+                        { nixpkgs.pkgs = pkgs; }
                         play-nix.nixosModules.play
                         sops-nix.nixosModules.sops
                         { networking.hostName = hostname; }
@@ -91,27 +89,24 @@
                                         in
                                             {
                                             name = username;
-                                            value = userUtils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit pkgs inputs; }));
+                                            value = userUtils.user.mkSystemUser  ({inherit username;} // (import ./${userFolder}/system.nix { inherit inputs pkgs; }));
                                         }
                                     )
                                     (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
                                 );
                             };
                         })
-
                     ] ++ additionalModules;
-                    specialArgs = { inherit inputs pkgs; };
+                    specialArgs = { inherit inputs; };
                 };
 
             mkUsers = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
+                    pkgs = import ./utils/packages { inherit system nixpkgs inputs; };
                     userUtils = import ./utils/user {
-                        inherit system nixpkgs pkgs home-manager lib inputs;
+                        inherit nixpkgs system pkgs home-manager lib inputs;
                     };
-                    pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    pkgs = pkgUtils.buildPkgs;
-                    lib = pkgs.lib;
                 in builtins.listToAttrs
                 (
                     map 

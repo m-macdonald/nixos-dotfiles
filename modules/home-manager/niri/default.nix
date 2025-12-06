@@ -18,7 +18,7 @@ in {
                 "Mod+Shift+E".action = quit;
                 "Mod+Return".action.spawn = "alacritty";
                 "Mod+Space".action = spawn "sh" "-c" "fuzzel";
-                "Mod+Shift+S".action = screenshot;
+                # "Mod+Shift+S".action = screenshot;
                 "Mod+Shift+C".action = close-window;
 
                 "Mod+Left".action = focus-column-left;

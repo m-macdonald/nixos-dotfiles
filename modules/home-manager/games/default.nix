@@ -32,7 +32,6 @@ in {
                     refreshRate = 144;
                 }
             ];
-
             gamescoperun = {
                 enable = true;
 
