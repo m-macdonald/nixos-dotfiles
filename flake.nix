@@ -24,7 +24,6 @@
         };
         play-nix = {
             url = "github:TophC7/play.nix/fea2ccf";
-            # inputs.nixpkgs.follows = "nixpkgs-unstable";
         };
         chaotic = {
             url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
@@ -38,36 +37,28 @@
 
     outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, nixos-hardware, sops-nix, arion, play-nix, niri, ... }@inputs : 
         let
-            nixlib = nixpkgs.lib;
+            lib = nixpkgs.lib;
 
-            baseUtils = import ./utils/base {
-                lib = nixlib;
-            };
+            baseUtils = import ./utils/base { inherit lib; };
 
             mkSystem = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    # pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    # TODO: Remove this and consolidate package configuration
-                    pkgs = import nixpkgs {
-                        inherit system;
-                        config.allowUnfree = true;
-                    };
-                    lib = nixpkgs.lib;
+                    pkgs = import ./utils/packages { inherit system nixpkgs inputs; };
                     userUtils = import ./utils/user {
                         inherit nixpkgs system pkgs home-manager lib inputs;
                     };
                     additionalModulesPath = ./${folder}/${hostname}/additional-modules.nix;
                     additionalModulesExist = builtins.pathExists additionalModulesPath;
-                    additionalModules = nixlib.lists.optionals additionalModulesExist (import additionalModulesPath inputs).modules;
+                    additionalModules = lib.lists.optionals additionalModulesExist (import additionalModulesPath inputs).modules;
                     systemConfigurationPath = ./${folder}/${hostname}/system-configuration.nix;
                     hardwareConfigurationPath = ./${folder}/${hostname}/hardware-configuration.nix;
-                in nixlib.nixosSystem
+                in lib.nixosSystem
                 {
                     inherit system; 
 
                     modules = [
-                        (import ./utils/packages)
+                        { nixpkgs.pkgs = pkgs; }
                         play-nix.nixosModules.play
                         sops-nix.nixosModules.sops
                         { networking.hostName = hostname; }
@@ -105,7 +96,6 @@
                                 );
                             };
                         })
-
                     ] ++ additionalModules;
                     specialArgs = { inherit inputs; };
                 };
@@ -113,16 +103,10 @@
             mkUsers = folder: hostname:
                 let
                     system = import ./${folder}/${hostname}/_localSystem.nix;
-                    # TODO: Remove this and consolidate package configuration
-                    pkgs = import nixpkgs {
-                        inherit system;
-                        config.allowUnfree = true;
-                    };
+                    pkgs = import ./utils/packages { inherit system nixpkgs inputs; };
                     userUtils = import ./utils/user {
                         inherit nixpkgs system pkgs home-manager lib inputs;
                     };
-                    # pkgUtils = import ./utils/packages { inherit system nixpkgs nixpkgs-unstable nur niri; };
-                    lib = nixpkgs.lib;
                 in builtins.listToAttrs
                 (
                     map 

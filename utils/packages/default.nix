@@ -1,4 +1,4 @@
-{ inputs, ...}:
+{ inputs, nixpkgs, system, ...}:
     let
         volta-package = ../../packages/volta.nix;
         flameshot-package = ../../packages/flameshot.nix;
@@ -37,24 +37,12 @@
                 nurpkgs = inputs.nixpkgs.legacyPackages."${pkgs.system}";
             };
 in
-{
-        nixpkgs = {
-            inherit overlays;
-            config = {
-                allowUnfree = true;
-                packageOverrides = pkgs: {
-                    nur = override-nur pkgs;
-                };
-            };
+import nixpkgs {
+    inherit overlays system;
+    config = {
+        allowUnfree = true;
+        packageOverrides = pkgs: {
+            nur = override-nur pkgs;
         };
-        # import nixpkgs {
-        #     inherit system;
-        #     config = { 
-        #         allowUnfree = true;
-        #         packageOverrides = pkgs: {
-        #             nur = override-nur pkgs;
-        #         };
-        #     };
-        #     overlays = overlays;
-        # };
+    };
 }
