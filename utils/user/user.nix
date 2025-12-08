@@ -5,6 +5,7 @@
             inherit pkgs;
             modules = [
                 ../../modules
+                ../../utils/hosts
                 {
                     home = {
                         username = username;

@@ -61,6 +61,7 @@
                         { nixpkgs.pkgs = pkgs; }
                         play-nix.nixosModules.play
                         sops-nix.nixosModules.sops
+                        (import ./utils/hosts)
                         { networking.hostName = hostname; }
                         systemConfigurationPath
                         hardwareConfigurationPath

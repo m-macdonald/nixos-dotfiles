@@ -16,6 +16,7 @@
     ./dev
     ./rdp
     ./spotify
+    ../../utils/hosts
   ];
 
   home.packages = with pkgs; [

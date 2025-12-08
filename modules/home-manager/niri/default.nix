@@ -1,6 +1,8 @@
 { lib, config, pkgs, inputs, ... }: 
 with lib;
-let cfg = config.modules.niri;
+let 
+    cfg = config.modules.niri;
+    monitorCfg = config.modules.host.monitors;
 in {
   options.modules.niri = { 
       enable = mkEnableOption "niri";
@@ -68,29 +70,24 @@ in {
                 };
             };
 
-            outputs = {
-                "DP-1" = {
-                    mode = {
-                        height = 1440;
-                        width = 2560;
-                    };
-                    position = {
-                        x = 1920;
-                        y = 0;
-                    };
-                };
-                "DP-2" = {
-                    mode = {
-                        height = 1080;
-                        width = 1920;
-                    };
-                    position = {
-                        x = 0;
-                        y = 0;
-                    };
-                };
-            };
-
+            outputs = builtins.listToAttrs (
+                    map (monitor : {
+                        name = monitor.name;
+                        value = {
+                            enable = true;
+                            mode = {
+                                height = monitor.mode.height;
+                                width = monitor.mode.width;
+                                refresh = monitor.mode.refreshRate;
+                            };
+                            position = {
+                                x = monitor.position.x;
+                                y = monitor.position.y;
+                            };
+                        };
+                    })
+                    monitorCfg
+                );
         };
     };
 
