@@ -91,6 +91,8 @@ in {
 			mkvtoolnix
 			makemkv
 			mpv
+            # TODO: I don't particularly want Java exposed to my entire user environment, but I'm too lazy to go a different route right now
+            jdk17
 		] ++ [ vlc ];
 /*
 		home.file = {
