@@ -5,8 +5,6 @@
     ];
 
     modules = {
-    	kodi.enable = true;
-        nvidia.enable = true;
         podman.enable = true;
         rdp.enable = true;
     };
