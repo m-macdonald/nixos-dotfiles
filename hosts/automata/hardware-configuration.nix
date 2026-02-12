@@ -16,6 +16,7 @@
     kernelModules = ["kvm-amd" "ntsync"];
 
     initrd = {
+      kernelModules = ["amdgpu"];
       availableKernelModules = [
         "nvme"
         "ahci"
@@ -76,5 +77,8 @@
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware = {
+        enableRedistributableFirmware = lib.mkForce true;
+        cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
 }

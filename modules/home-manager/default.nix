@@ -10,6 +10,7 @@
     ./kodi
     ./mkv
     ./niri
+    ./noctalia
     ./nvim
     ./tmux
     ./zsh
