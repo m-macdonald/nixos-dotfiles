@@ -3,11 +3,11 @@
   imports = [
     ./alacritty
     ./dunst
-    ./firefox
     ./games
     ./git
     ./hyprland
     ./kodi
+    ./librewolf
     ./mkv
     ./niri
     ./noctalia
