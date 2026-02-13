@@ -25,7 +25,7 @@ in {
         enable = true;
         extraCompatPackages = with pkgs; [
           proton-ge-bin
-          inputs.dw-proton.packages.${pkgs.system}.default
+          inputs.dw-proton.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
       };
       gamemode.enable = true;

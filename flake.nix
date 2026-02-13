@@ -62,7 +62,7 @@
       system = import ./${folder}/${hostname}/_localSystem.nix;
       pkgs = import ./utils/packages {inherit system nixpkgs inputs;};
       userUtils = import ./utils/user {
-        inherit nixpkgs system pkgs home-manager lib inputs;
+        inherit nixpkgs pkgs home-manager lib inputs;
       };
       additionalModulesPath = ./${folder}/${hostname}/additional-modules.nix;
       additionalModulesExist = builtins.pathExists additionalModulesPath;
