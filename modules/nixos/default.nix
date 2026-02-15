@@ -11,5 +11,6 @@
     ./plasma-bigscreen
     ./podman
     ./rdp
+    ./sunshine
   ];
 }
