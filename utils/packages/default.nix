@@ -34,7 +34,7 @@
         override-nur = pkgs:
             import inputs.nur { 
                 inherit pkgs;
-                nurpkgs = inputs.nixpkgs.legacyPackages."${pkgs.system}";
+                nurpkgs = inputs.nixpkgs.legacyPackages."${pkgs.stdenv.hostPlatform.system}";
             };
 in
 import nixpkgs {

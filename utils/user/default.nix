@@ -1,4 +1,4 @@
-{ nixpkgs, pkgs, home-manager, system, lib, inputs, ...  }:
+{ nixpkgs, pkgs, home-manager, lib, inputs, ...  }:
 {
-	user = import ./user.nix { inherit nixpkgs pkgs home-manager lib system inputs; };
+	user = import ./user.nix { inherit nixpkgs pkgs home-manager lib inputs; };
 }

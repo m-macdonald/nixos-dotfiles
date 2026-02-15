@@ -7,7 +7,7 @@ in {
   config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      dotDir = ".config/zsh";
+      dotDir = config.xdg.configHome + "/zsh";
       enableCompletion = true;
       syntaxHighlighting.enable = true;
       shellAliases = {
