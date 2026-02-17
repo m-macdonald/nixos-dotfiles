@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 let 
 	cfg = config.modules.rdp;
@@ -9,16 +9,16 @@ in {
 
 	config = mkIf cfg.enable {
 		services = {
-			xserver = {
-				enable = true;
-				displayManager.sddm.enable = true;
-				desktopManager.plasma5.enable = true;
-			};
+            desktopManager.plasma6.enable = true;
+            displayManager = {
+                enable = true;
+                sddm.enable = true;
+            };
 
 			xrdp = {
 				enable = true;
 				defaultWindowManager = "startplasma-x11";
-				openFirewall = true;
+                openFirewall = true;
 			};
 		};
 	};
