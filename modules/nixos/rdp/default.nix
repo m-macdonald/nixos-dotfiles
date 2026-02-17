@@ -9,15 +9,19 @@ in {
 
 	config = mkIf cfg.enable {
 		services = {
-			xserver = {
-				enable = true;
-				displayManager.sddm.enable = true;
-				desktopManager.plasma5.enable = true;
-			};
+            desktopManager.plasma6.enable = true;
+            displayManager = {
+                enable = true;
+                sddm.enable = true;
+            };
 
 			xrdp = {
 				enable = true;
-				defaultWindowManager = "startplasma-x11";
+                # Had to disable compositing to get rdp working again after move to Plasma6
+				defaultWindowManager = "${pkgs.writeShellScript "start-plasma-xrdp" ''
+                    export KWIN_COMPOSE=N
+                    exec startplasma-x11
+                ''}";
 				openFirewall = true;
 			};
 		};
