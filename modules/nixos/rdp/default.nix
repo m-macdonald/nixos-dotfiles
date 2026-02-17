@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 let 
 	cfg = config.modules.rdp;
@@ -17,12 +17,8 @@ in {
 
 			xrdp = {
 				enable = true;
-                # Had to disable compositing to get rdp working again after move to Plasma6
-				defaultWindowManager = "${pkgs.writeShellScript "start-plasma-xrdp" ''
-                    export KWIN_COMPOSE=N
-                    exec startplasma-x11
-                ''}";
-				openFirewall = true;
+				defaultWindowManager = "startplasma-x11";
+                openFirewall = true;
 			};
 		};
 	};
