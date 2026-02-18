@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   imports = [
     ../../modules/nixos
   ];
@@ -11,6 +9,7 @@
       amd.enable = true;
       hyprland.enable = true;
       bluetooth.enable = true;
+      sunshine.enable = true;
     };
 
     hardware = {
