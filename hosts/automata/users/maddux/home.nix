@@ -1,17 +1,8 @@
 {
-  pkgs,
-  username,
-  config,
-  lib,
-  inputs,
   ...
 }: {
   imports = [../../../../modules/home-manager/default.nix];
   config = {
-    # isNormalUser = true;
-    # extraGroups = [ "input" "wheel" "docker" ];
-    # shell = pkgs.zsh;
-    # nix.settings.allowed-users = [ username ];
     modules = {
       alacritty.enable = true;
       nvim.enable = true;

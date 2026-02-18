@@ -25,11 +25,6 @@ in {
     sops.secrets.nas = {};
 
     fileSystems = {
-      # "/mnt/nas/appdata" = {
-      #     device = "//tower/appdata";
-      #     fsType = "cifs";
-      #     options = options;
-      # };
       "/mnt/nas/media" = {
         device = "//tower/media";
         fsType = "cifs";

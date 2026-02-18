@@ -19,13 +19,10 @@ in {
     services.xserver = {
       enable = true;
       layout = "us";
-      #autorun = true;
       exportConfiguration = true;
       displayManager = {
-        #                defaultSession = "plasmawayland";
         sddm = {
           enable = true;
-          #                    wayland.enable = true;
         };
       };
       desktopManager.plasma5.bigscreen.enable = true;

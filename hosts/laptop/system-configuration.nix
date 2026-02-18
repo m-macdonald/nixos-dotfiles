@@ -1,7 +1,4 @@
 {
-  config,
-  pkgs,
-  inputs,
   ...
 }: {
   imports = [
@@ -29,11 +26,7 @@
       QT_QPA_PLATFORM = "x11";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       MOZ_ENABLE_WAYLAND = "1";
-      # WLR_BACKEND = "vulkan";
-      # WLR_RENDERER = "vulkan";
       XDG_SESSION_TYPE = "wayland";
-      # This variable seems to conflict with gamescope. Commenting for testing
-      #    SDL_VIDEODRIVER = "wayland";
       CLUTTER_BACKEND = "wayland";
     };
 

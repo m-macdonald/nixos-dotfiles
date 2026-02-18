@@ -44,13 +44,7 @@ in {
         defaultWSI = true;
         defaultSystemd = false;
 
-        # extraOptions = {
-        #     "expose-wayland" = true;
-        # };
-
         baseOptions = {
-          # "fsr-upscaling" = true;
-          # Overrides monitor derived-width
           "force-grab-cursor" = true;
         };
       };
@@ -59,9 +53,7 @@ in {
         steam = lib.mkDefault {
           enable = true;
 
-          # command = "steam -bigpicture -tenfoot";
           command = "/run/current-system/sw/bin/steam -bigpicture";
-          # package = pkgs.steam;
 
           useWSI = false;
 
@@ -80,22 +72,6 @@ in {
 
           package = pkgs.heroic;
         };
-
-        # # This wrapper is unused at the moment
-        # lutris = lib.mkDefault {
-        #     enable = true;
-        #
-        #     command = "lutris";
-        #
-        #     extraOptions = {
-        #         "force-windows-fullscreen" = true;
-        #         "expose-wayland" = true;
-        #     };
-        #
-        #     environment = {
-        #         LUTRIS_SKIP_INIT = 1;
-        #     };
-        # };
       };
     };
 
@@ -158,11 +134,6 @@ in {
     };
 
     home.packages = with pkgs; [
-      # steam
-      # heroic
-      # bottles
-
-      # xivlauncher
       discord
       cockatrice
     ];
