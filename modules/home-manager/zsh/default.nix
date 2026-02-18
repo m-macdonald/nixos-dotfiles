@@ -1,8 +1,13 @@
-{ lib, config, pkgs, ... }:
-with lib;
-let cfg = config.modules.zsh;
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.modules.zsh;
 in {
-  options.modules.zsh = { enable = mkEnableOption "zsh"; };
+  options.modules.zsh = {enable = mkEnableOption "zsh";};
 
   config = mkIf cfg.enable {
     programs.zsh = {
@@ -22,7 +27,7 @@ in {
         ignoreDups = true;
       };
       # Nothing for now, but leaving here so I don't have to find the documentation again.
-      initExtra = '' '';
+      initExtra = '''';
       # Aliases for directories
       # cd ~dots
       dirHashes = {
@@ -30,7 +35,7 @@ in {
         projects = "$HOME/Documents/projects";
       };
       plugins = with pkgs; [
-        { 
+        {
           name = "spaceship";
           file = "spaceship.zsh";
           src = pkgs.fetchFromGitHub {

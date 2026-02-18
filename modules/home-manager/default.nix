@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./alacritty
     ./dunst
@@ -21,7 +20,7 @@
 
   home.packages = with pkgs; [
     # TODO: Bitwarden launches to a blank screen. Find a fix. In the meantime, I'm using the browser extension.
-#    bitwarden
+    #    bitwarden
     # Utilities
     unzipNLS
   ];

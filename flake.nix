@@ -140,6 +140,14 @@
         })
         (baseUtils.lsLib.ls ./${folder}/${hostname}/users)
       );
+
+    formatter = folder: hostname: let
+      system = import ./${folder}/${hostname}/_localSystem.nix;
+      pkgs = import ./utils/packages {inherit system nixpkgs inputs;};
+    in {
+      name = system;
+      value = pkgs.alejandra;
+    };
   in {
     homeManagerConfigurations = (
       folder:
@@ -158,6 +166,14 @@
           name = hostname;
           value = mkSystem folder hostname;
         })
+        (baseUtils.lsLib.ls ./${folder})
+      )) "hosts";
+
+    formatter = (folder:
+      builtins.listToAttrs
+      (
+        map
+        (hostname: formatter folder hostname)
         (baseUtils.lsLib.ls ./${folder})
       )) "hosts";
   };

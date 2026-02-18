@@ -1,5 +1,11 @@
-{ pkgs, username, config, lib, inputs, ... }:
 {
+  pkgs,
+  username,
+  config,
+  lib,
+  inputs,
+  ...
+}: {
   imports = [../../../../modules/home-manager/default.nix];
   config = {
     # isNormalUser = true;
