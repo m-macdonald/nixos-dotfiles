@@ -1,6 +1,12 @@
-{  lib, config, pkgs, inputs, ... }:
-with lib;
-let cfg = config.modules.tmux;
+{
+  lib,
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
+with lib; let
+  cfg = config.modules.tmux;
 in {
   options.modules.tmux = {
     enable = mkOption {
@@ -20,7 +26,7 @@ in {
       keyMode = "vi";
       mouse = true;
       # TODO: Pull this from the user's config
-      shell = "${pkgs.zsh}/bin/zsh"; 
+      shell = "${pkgs.zsh}/bin/zsh";
       plugins = with pkgs.tmuxPlugins; [
         vim-tmux-navigator
         yank

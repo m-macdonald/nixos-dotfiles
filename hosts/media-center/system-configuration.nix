@@ -1,29 +1,33 @@
-{ config, pkgs, lib, ... }:
 {
-    imports = [
-        ../../modules/nixos
-    ];
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    ../../modules/nixos
+  ];
 
-    modules = {
-        podman.enable = true;
-        rdp.enable = true;
+  modules = {
+    podman.enable = true;
+    rdp.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [neovim git];
+  boot.loader.systemd-boot.enable = true;
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = true;
     };
+  };
 
-    environment.systemPackages = with pkgs; [ neovim git ];
-    boot.loader.systemd-boot.enable = true;
+  networking = {
+    hostName = "media-center";
+  };
 
-    services.openssh = {
-        enable = true;
-        settings = {
-            PasswordAuthentication = true;
-        };
-    };
+  hardware.enableRedistributableFirmware = true;
 
-	networking = {
-		hostName = "media-center";
-	};
-
-    hardware.enableRedistributableFirmware = true;
-
-    system.stateVersion = "23.11";
+  system.stateVersion = "23.11";
 }

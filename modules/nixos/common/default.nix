@@ -1,35 +1,39 @@
-{ config, pkgs, inputs, ... }:
 {
-    imports = [
-        ./bluetooth.nix
-        ./fonts.nix
-        ./nix.nix
-        ./shells.nix
-        ./polkit-agent.nix
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    ./bluetooth.nix
+    ./fonts.nix
+    ./nix.nix
+    ./shells.nix
+    ./polkit-agent.nix
+  ];
 
-    environment.defaultPackages = [ ];
-    services.xserver.desktopManager.xterm.enable = false;
+  environment.defaultPackages = [];
+  services.xserver.desktopManager.xterm.enable = false;
 
-    nix = {
-        extraOptions = ''
-              experimental-features = nix-command flakes
-              keep-outputs = true
-              keep-derivations = true
-            '';
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-outputs = true
+      keep-derivations = true
+    '';
+  };
+
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
     };
-
-    services.pulseaudio.enable = false;
-    security.rtkit.enable = true;
-    services.pipewire = {
-        enable = true;
-        alsa = {
-            enable = true;
-            support32Bit = true;
-        };
-        pulse.enable = true;
-        wireplumber.enable = true;
-        jack.enable = true;
-        # lowLatency.enable = true;
-    };
+    pulse.enable = true;
+    wireplumber.enable = true;
+    jack.enable = true;
+    # lowLatency.enable = true;
+  };
 }

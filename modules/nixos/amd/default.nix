@@ -14,10 +14,9 @@ in {
 
   config = mkIf cfg.enable {
     hardware.amdgpu = {
-        overdrive.enable = true;
-        opencl.enable = true;
+      overdrive.enable = true;
+      opencl.enable = true;
     };
-
 
     play = {
       amd.enable = true;

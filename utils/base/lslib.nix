@@ -1,4 +1,3 @@
-{ ... }: 
-{
-    ls = folder: (builtins.attrNames (builtins.readDir folder));
+{...}: {
+  ls = folder: (builtins.attrNames (builtins.readDir folder));
 }
