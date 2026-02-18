@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  cfg = config.sunshine;
+  cfg = config.modules.sunshine;
 in {
   options.modules.sunshine = {
     enable = mkEnableOption "Sunshine game streaming";
