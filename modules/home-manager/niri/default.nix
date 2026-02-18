@@ -24,7 +24,6 @@ in {
           "Mod+Shift+E".action = quit;
           "Mod+Return".action.spawn = "alacritty";
           "Mod+Space".action.spawn = ["noctalia-shell" "ipc" "call" "launcher" "toggle"];
-          # "Mod+Shift+S".action = screenshot;
           "Mod+Shift+C".action = close-window;
 
           "Mod+Left".action = focus-column-left;
@@ -33,8 +32,6 @@ in {
           "Mod+Alt+Left".action = focus-monitor-left;
           "Mod+Alt+Up".action = focus-workspace-up;
           "Mod+Alt+Down".action = focus-workspace-down;
-          # "Mod+Up".action = focus-column-up;
-          # "Mod+Down".action = focus-column-down;
 
           "Mod+F".action = fullscreen-window;
           "Mod+V".action = toggle-window-floating;
@@ -103,7 +100,6 @@ in {
 
     home.packages = with pkgs; [
       xwayland-satellite
-      # gnome-keyring
     ];
 
     xdg.portal = {
