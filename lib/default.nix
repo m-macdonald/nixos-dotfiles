@@ -20,7 +20,7 @@
 
   mkPkgs = system: import ./mkPkgs.nix {inherit inputs nixpkgs system;};
 
-  mkHost = import ./mkHost.nix {inherit inputs lib nixpkgs ls mergeAttrs mkPkgs;};
+  mkHost = import ./mkHost.nix {inherit inputs lib ls mkPkgs;};
 in {
   inherit ls mergeAttrs;
   inherit (mkHost) mkSystem mkUsers;

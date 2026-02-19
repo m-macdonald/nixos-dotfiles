@@ -1,17 +1,18 @@
 {
   pkgs,
-  home-manager,
   inputs,
   ...
 }: {
   mkHmUser = {
     userConfig,
     username,
-  }:
-    home-manager.lib.homeManagerConfiguration {
+  }: let
+    self = inputs.self;
+  in
+    inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ../../modules/home-manager
+        "${self}/modules/home-manager"
         inputs.nixvim.homeManagerModules.${pkgs.stdenv.hostPlatform.system}.nixvim
         {
           home = {

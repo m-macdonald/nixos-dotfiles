@@ -3,13 +3,9 @@
 {
   inputs,
   lib,
-  nixpkgs,
   ls,
-  mergeAttrs,
   mkPkgs,
 }: let
-  inherit (inputs) home-manager sops-nix play-nix;
-
   self = inputs.self;
 
   globalSecrets = import ./secrets.nix;
@@ -33,7 +29,7 @@
 
   mkSopsModule = hostname: {
     sops = {
-      defaultSopsFile = ../secrets/secrets.yaml;
+      defaultSopsFile = "${self}/secrets/secrets.yaml";
       age = {
         keyFile = "/var/lib/sops-nix/key.txt";
         generateKey = false;
@@ -44,7 +40,7 @@
 
   # ── Users ──────────────────────────────────────────────────────────────────
   mkSystemUsersModule = hostname: pkgs: let
-    userLib = import ./user {inherit nixpkgs pkgs home-manager lib inputs;};
+    userLib = import ./mkUser.nix {inherit pkgs inputs;};
     usernames = ls (hostPath hostname "users");
   in {
     users = {
@@ -52,7 +48,7 @@
       users = builtins.listToAttrs (
         map (username: {
           name = username;
-          value = userLib.user.mkSystemUser (
+          value = userLib.mkSystemUser (
             {inherit username;}
             // (import (hostPath hostname "users/${username}/system.nix") {inherit inputs pkgs;})
           );
@@ -63,7 +59,6 @@
   };
 
   # ── Public functions ────────────────────────────────────────────────────────
-
   mkSystem = hostname: let
     system = import (hostPath hostname "arch.nix");
     pkgs = mkPkgs system;
@@ -73,8 +68,8 @@
       modules = [
         "${self}/modules/nixos"
         {nixpkgs.pkgs = pkgs;}
-        play-nix.nixosModules.play
-        sops-nix.nixosModules.sops
+        inputs.play-nix.nixosModules.play
+        inputs.sops-nix.nixosModules.sops
         {networking.hostName = hostname;}
         (hostPath hostname "system-configuration.nix")
         (hostPath hostname "hardware-configuration.nix")
@@ -87,13 +82,13 @@
   mkUsers = hostname: let
     system = import (hostPath hostname "arch.nix");
     pkgs = mkPkgs system;
-    userLib = import ./user {inherit nixpkgs pkgs home-manager lib inputs;};
+    userLib = import ./mkUser.nix {inherit pkgs inputs;};
     usernames = ls (hostPath hostname "users");
   in
     builtins.listToAttrs (
       map (username: {
         name = "${username}@${hostname}";
-        value = userLib.user.mkHmUser {
+        value = userLib.mkHmUser {
           inherit username;
           userConfig = hostPath hostname "users/${username}/home.nix";
         };
