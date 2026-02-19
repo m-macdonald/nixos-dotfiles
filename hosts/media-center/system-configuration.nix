@@ -4,10 +4,6 @@
   lib,
   ...
 }: {
-  imports = [
-    ../../modules/nixos
-  ];
-
   modules = {
     podman.enable = true;
     rdp.enable = true;
