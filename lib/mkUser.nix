@@ -26,7 +26,8 @@
       extraSpecialArgs = {inherit inputs;};
     };
 
-  mkSystemUser = {
+  mkHostUser = {
+    config,
     username,
     groups,
     uid,
@@ -38,7 +39,7 @@
     isSystemUser = false;
     extraGroups = groups;
     uid = uid;
-    initialPassword = "changeme";
+    hashedPasswordFile = config.sops.secrets."users/${username}/password".path; 
     shell = shell;
   };
 }
