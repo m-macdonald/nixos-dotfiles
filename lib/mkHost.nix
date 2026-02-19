@@ -39,7 +39,7 @@
   };
 
   # ── Users ──────────────────────────────────────────────────────────────────
-  mkSystemUsersModule = hostname: pkgs: let
+  mkSystemUsersModule = hostname: pkgs: {config, ...}: let
     userLib = import ./mkUser.nix {inherit pkgs inputs;};
     usernames = ls (hostPath hostname "users");
   in {
@@ -48,8 +48,8 @@
       users = builtins.listToAttrs (
         map (username: {
           name = username;
-          value = userLib.mkSystemUser (
-            {inherit username;}
+          value = userLib.mkHostUser (
+            {inherit username config;}
             // (import (hostPath hostname "users/${username}/system.nix") {inherit inputs pkgs;})
           );
         })
