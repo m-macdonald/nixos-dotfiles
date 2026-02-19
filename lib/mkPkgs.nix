@@ -1,13 +1,8 @@
 {
   inputs,
-  nixpkgs,
   system,
   ...
 }: let
-  overlays = [
-    overlay-unstable
-    inputs.niri.overlays.niri
-  ];
   overlay-unstable = final: _: {
     unstable = import inputs.nixpkgs-unstable {
       system = final.stdenv.hostPlatform.system;
@@ -20,8 +15,13 @@
       inherit pkgs;
       nurpkgs = inputs.nixpkgs.legacyPackages."${pkgs.stdenv.hostPlatform.system}";
     };
+
+  overlays = [
+    overlay-unstable
+    inputs.niri.overlays.niri
+  ];
 in
-  import nixpkgs {
+  import inputs.nixpkgs {
     inherit overlays system;
     config = {
       allowUnfree = true;

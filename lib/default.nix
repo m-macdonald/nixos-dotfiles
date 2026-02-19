@@ -18,7 +18,7 @@
     in
       f [] attrList;
 
-  mkPkgs = system: import ./mkPkgs.nix {inherit inputs nixpkgs system;};
+  mkPkgs = system: import ./mkPkgs.nix {inherit inputs system;};
 
   mkHost = import ./mkHost.nix {inherit inputs lib ls mkPkgs;};
 in {
