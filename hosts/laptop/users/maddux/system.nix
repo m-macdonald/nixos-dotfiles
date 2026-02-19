@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   isNormalUser = true;
   groups = ["input" "wheel" "docker"];
   shell = pkgs.zsh;

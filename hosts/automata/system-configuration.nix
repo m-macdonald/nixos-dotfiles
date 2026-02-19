@@ -1,8 +1,4 @@
 {...}: {
-  imports = [
-    ../../modules/nixos
-  ];
-
   config = {
     modules = {
       docker.enable = true;

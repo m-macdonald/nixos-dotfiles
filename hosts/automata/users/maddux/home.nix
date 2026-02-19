@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   imports = [../../../../modules/home-manager/default.nix];
   config = {
     modules = {
