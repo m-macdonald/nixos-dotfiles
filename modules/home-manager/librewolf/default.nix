@@ -1,7 +1,6 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   config = {
-    programs.firefox = {
+    programs.librewolf = {
       enable = true;
 
       # Necessary in order for extensions to be available.
@@ -9,7 +8,7 @@
         id = 0;
         name = "Default";
         isDefault = true;
-        extensions = with pkgs; [
+        extensions.packages = with pkgs; [
           # Bitwarden for password management
           nur.repos.rycee.firefox-addons.bitwarden
         ];

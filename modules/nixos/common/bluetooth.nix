@@ -1,6 +1,10 @@
-{ config, lib, pkgs, ... }: 
-with lib;
-let 
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.modules.bluetooth;
 in {
   options.modules.bluetooth = {
@@ -13,10 +17,10 @@ in {
 
   config = mkIf cfg.enable {
     hardware = {
-        bluetooth = {
-            enable = true;
-            powerOnBoot = true;
-        };
+      bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+      };
     };
     services.blueman.enable = true;
   };

@@ -1,13 +1,12 @@
-{ lib, config, pkgs, inputs, system, ... }:
-with lib;
-let 
+{
+  lib,
+  config,
+  ...
+}:
+with lib; let
   cfg = config.modules.nvim;
 in {
-  imports = [
-    inputs.nixvim.homeManagerModules.${system}.nixvim
-  ];
-
-  options.modules.nvim = { 
+  options.modules.nvim = {
     enable = mkOption {
       default = false;
       description = "Enable the nvim text editor";
@@ -19,14 +18,13 @@ in {
       type = types.bool;
     };
   };
-  
-  config = mkIf cfg.enable {
 
+  config = mkIf cfg.enable {
     programs.nixvim = {
       enable = true;
       defaultEditor = true;
     };
-    
+
     home.sessionVariables = mkIf cfg.makeDefaultEditor {
       EDITOR = "nvim";
     };

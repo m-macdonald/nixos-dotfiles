@@ -1,12 +1,17 @@
-{ lib, config, pkgs, ... }: 
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 with lib;
-with builtins;
-let cfg = config.modules.alacritty;
+with builtins; let
+  cfg = config.modules.alacritty;
 in {
-  options.modules.alacritty = { enable = mkEnableOption "alacritty"; };
+  options.modules.alacritty = {enable = mkEnableOption "alacritty";};
 
   config = mkIf cfg.enable {
-    home = { 
+    home = {
       sessionVariables = {
         TERM = "alacritty";
       };
@@ -16,10 +21,10 @@ in {
       settings = {
         window.opacity = 0.8;
         terminal = {
-            # TODO: Set this to the shell in the user's config
-            shell = {
-              program = "tmux";
-            };
+          # TODO: Set this to the shell in the user's config
+          shell = {
+            program = "tmux";
+          };
         };
       };
     };

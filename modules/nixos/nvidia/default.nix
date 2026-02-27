@@ -1,9 +1,12 @@
-{  config, lib, pkgs, ... }:
-with lib;
-let 
-  cfg = config.modules.nvidia;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.modules.nvidia;
+in {
   options.modules.nvidia = {
     enable = mkOption {
       description = "Enable Nvidia drivers";
@@ -13,24 +16,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.xserver.videoDrivers = [ "nvidia" ];
-/*
-    environment = {
-      variables = {
-        WLR_BACKEND = "vulkan";
-        WLR_RENDERER = "vulkan";
-      };
-      systemPackages = with pkgs; [
-        vulkan-loader
-        vulkan-validation-layers
-        vulkan-tools
-      ];
-    };
-*/
+    services.xserver.videoDrivers = ["nvidia"];
     hardware = {
       graphics = {
-      	enable = true;
-	extraPackages = with pkgs; [
+        enable = true;
+        extraPackages = with pkgs; [
           nvidia-vaapi-driver
         ];
       };
@@ -38,8 +28,8 @@ in
         open = false;
         powerManagement.enable = false;
         modesetting.enable = true;
-	nvidiaSettings = true;
-	package = config.boot.kernelPackages.nvidiaPackages.stable;
+        nvidiaSettings = true;
+        package = config.boot.kernelPackages.nvidiaPackages.stable;
       };
     };
   };

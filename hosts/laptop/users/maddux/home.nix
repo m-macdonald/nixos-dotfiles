@@ -1,9 +1,6 @@
-{ pkgs, username, config, lib, inputs, ... }:
 {
-  imports = [
-        ../../../../modules/home-manager/default.nix
-        ../../monitors.nix
-  ];
+  ...
+}: {
   config = {
     modules = {
       alacritty.enable = true;

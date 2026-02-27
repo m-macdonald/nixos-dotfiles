@@ -1,5 +1,6 @@
-{ config, pkgs, inputs, ... }:
 {
+  ...
+}: {
   imports = [
     ./amd
     ./common
@@ -11,6 +12,6 @@
     ./plasma-bigscreen
     ./podman
     ./rdp
-    ../../utils/hosts
+    ./sunshine
   ];
 }
