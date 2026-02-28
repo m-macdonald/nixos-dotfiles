@@ -44,7 +44,6 @@ in
           "Mod+F".action = fullscreen-window;
           "Mod+V".action = toggle-window-floating;
           "Mod+O".action = toggle-overview;
-
           "Mod+Shift+Right".action = move-column-right;
           "Mod+Shift+Left".action = move-column-left;
           "Mod+Shift+Up".action = move-column-to-workspace-up;

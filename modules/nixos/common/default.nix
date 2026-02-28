@@ -10,6 +10,7 @@
     ./nix.nix
     ./shells.nix
     ./polkit-agent.nix
+    ./vpn.nix
   ];
 
   environment.defaultPackages = [];

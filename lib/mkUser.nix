@@ -6,13 +6,17 @@
   mkHmUser = {
     userConfig,
     username,
+    hostname
   }: let
     self = inputs.self;
+    hosts = import ./hosts.nix {inherit inputs;};
   in
     inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
         "${self}/modules/home-manager"
+        "${self}/lib/monitors.nix"
+        (hosts.hostPath hostname "monitors.nix")
         inputs.nixvim.homeManagerModules.${pkgs.stdenv.hostPlatform.system}.nixvim
         {
           home = {
