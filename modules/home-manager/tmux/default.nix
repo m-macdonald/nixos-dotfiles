@@ -20,7 +20,7 @@ in {
     programs.tmux = {
       enable = true;
       historyLimit = 100000;
-      prefix = "C-Space";
+      shortcut = "a";
       baseIndex = 1;
       escapeTime = 0;
       keyMode = "vi";
