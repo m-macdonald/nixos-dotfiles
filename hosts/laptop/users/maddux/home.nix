@@ -4,6 +4,7 @@
   config = {
     modules = {
       alacritty.enable = true;
+      helium.enable = true;
       nvim.enable = true;
       rdp.client.enable = true;
       niri.enable = true;

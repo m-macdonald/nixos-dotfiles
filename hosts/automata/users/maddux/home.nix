@@ -3,6 +3,7 @@
   config = {
     modules = {
       alacritty.enable = true;
+      helium.enable = true;
       nvim.enable = true;
       niri.enable = true;
       noctalia.enable = true;
