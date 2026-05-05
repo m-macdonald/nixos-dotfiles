@@ -11,6 +11,7 @@
       git.enable = true;
       games.enable = true;
       rdp.client.enable = true;
+      spotify.enable = true;
       tmux.enable = true;
     };
   };
