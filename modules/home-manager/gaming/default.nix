@@ -42,10 +42,10 @@
   '';
 
   heroic-gamescope = pkgs.writeShellScriptBin "heroic-gamescope" ''
-    exec ${gamescoperun}/bin/gamescoperun ${pkgs.heroic}/bin/heroic "$@"
+    exec ${gamescoperun}/bin/gamescoperun ${lib.getExe pkgs.heroic} "$@"
   '';
   steam-gamescope = pkgs.writeShellScriptBin "steam-gamescope" ''
-    exec ${gamescoperun}/bin/gamescoperun /run/current-system/sw/bin/steam
+    exec ${gamescoperun}/bin/gamescoperun steam
   '';
 in {
   options.modules.gaming.enable = lib.mkEnableOption "gaming";
@@ -100,7 +100,7 @@ in {
 
       steam = lib.mkDefault {
         name = "Steam";
-        exec = "/run/current-system/sw/bin/steam";
+        exec = "steam";
         icon = "steam";
         type = "Application";
         terminal = false;
@@ -132,7 +132,7 @@ in {
         };
       };
       heroic = lib.mkDefault {
-        name = "Heroic (Gamescope)";
+        name = "Heroic";
         exec = lib.getExe pkgs.heroic;
         icon = "com.heroicgameslauncher.hgl";
         type = "Application";
