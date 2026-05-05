@@ -61,7 +61,6 @@
           map myLib.mkUsers hostnames
         );
       };
-
       perSystem = {pkgs, ...}: {
         formatter = pkgs.alejandra;
       };

@@ -5,9 +5,12 @@
   inputs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.niri;
-in {
+  monitorCfg = config.modules.host.monitors;
+in
+{
   options.modules.niri = {
     enable = mkEnableOption "niri";
   };
@@ -23,7 +26,13 @@ in {
         binds = with config.lib.niri.actions; {
           "Mod+Shift+E".action = quit;
           "Mod+Return".action.spawn = "alacritty";
-          "Mod+Space".action.spawn = ["noctalia-shell" "ipc" "call" "launcher" "toggle"];
+          "Mod+Space".action.spawn = [
+            "noctalia-shell"
+            "ipc"
+            "call"
+            "launcher"
+            "toggle"
+          ];
           "Mod+Shift+C".action = close-window;
 
           "Mod+Left".action = focus-column-left;
@@ -32,11 +41,9 @@ in {
           "Mod+Alt+Left".action = focus-monitor-left;
           "Mod+Alt+Up".action = focus-workspace-up;
           "Mod+Alt+Down".action = focus-workspace-down;
-
           "Mod+F".action = fullscreen-window;
           "Mod+V".action = toggle-window-floating;
           "Mod+O".action = toggle-overview;
-
           "Mod+Shift+Right".action = move-column-right;
           "Mod+Shift+Left".action = move-column-left;
           "Mod+Shift+Up".action = move-column-to-workspace-up;
@@ -56,13 +63,13 @@ in {
         # List of commands to run at startup.
         spawn-at-startup = [
           # Maybe move this into a systemd service eventually
-          {argv = ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"];}
+          { argv = [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ]; }
           # TODO: If I ever feel the need to have multiple possible shells I'm going to need to make this dynamic
-          {argv = ["noctalia-shell"];}
+          { argv = [ "noctalia-shell" ]; }
         ];
 
         workspaces = {
-          gaming = {};
+          gaming = { };
         };
 
         input = {
@@ -73,28 +80,23 @@ in {
           };
         };
 
-        outputs = {
-          "DP-1" = {
-            mode = {
-              height = 1440;
-              width = 2560;
+        outputs = builtins.listToAttrs (
+          map (monitor: {
+            name = monitor.name;
+            value = {
+              enable = true;
+              mode = {
+                height = monitor.mode.height;
+                width = monitor.mode.width;
+                refresh = monitor.mode.refreshRate;
+              };
+              position = {
+                x = monitor.position.x;
+                y = monitor.position.y;
+              };
             };
-            position = {
-              x = 1920;
-              y = 0;
-            };
-          };
-          "DP-2" = {
-            mode = {
-              height = 1080;
-              width = 1920;
-            };
-            position = {
-              x = 0;
-              y = 0;
-            };
-          };
-        };
+          }) monitorCfg
+        );
       };
     };
 

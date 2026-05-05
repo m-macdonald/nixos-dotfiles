@@ -9,17 +9,14 @@
   self = inputs.self;
 
   globalSecrets = import ./secrets.nix;
-
-  hostsDir = "${self}/hosts";
-
-  hostPath = hostname: relativePath: "${hostsDir}/${hostname}/${relativePath}";
+  hosts = import ./hosts.nix {inherit inputs;};
 
   # ── Secrets ────────────────────────────────────────────────────────────────
 
   # Merge global secrets with any host-specific overrides.
   # Host values take precedence via //.
   mkSecrets = hostname: let
-    hostSecretsPath = hostPath hostname "secrets.nix";
+    hostSecretsPath = hosts.hostPath hostname "secrets.nix";
     hostSecrets =
       if builtins.pathExists hostSecretsPath
       then import hostSecretsPath
@@ -41,7 +38,7 @@
   # ── Users ──────────────────────────────────────────────────────────────────
   mkSystemUsersModule = hostname: pkgs: {config, ...}: let
     userLib = import ./mkUser.nix {inherit pkgs inputs;};
-    usernames = ls (hostPath hostname "users");
+    usernames = ls (hosts.hostPath hostname "users");
   in {
     users = {
       mutableUsers = false;
@@ -50,7 +47,7 @@
           name = username;
           value = userLib.mkHostUser (
             {inherit username config;}
-            // (import (hostPath hostname "users/${username}/system.nix") {inherit inputs pkgs;})
+            // (import (hosts.hostPath hostname "users/${username}/system.nix") {inherit inputs pkgs;})
           );
         })
         usernames
@@ -60,19 +57,21 @@
 
   # ── Public functions ────────────────────────────────────────────────────────
   mkSystem = hostname: let
-    system = import (hostPath hostname "arch.nix");
+    system = import (hosts.hostPath hostname "arch.nix");
     pkgs = mkPkgs system;
   in
     lib.nixosSystem {
       inherit system;
       modules = [
         "${self}/modules/nixos"
+        "${self}/lib/monitors.nix"
         {nixpkgs.pkgs = pkgs;}
         inputs.play-nix.nixosModules.play
         inputs.sops-nix.nixosModules.sops
         {networking.hostName = hostname;}
-        (hostPath hostname "system-configuration.nix")
-        (hostPath hostname "hardware-configuration.nix")
+        (hosts.hostPath hostname "system-configuration.nix")
+        (hosts.hostPath hostname "hardware-configuration.nix")
+        (hosts.hostPath hostname "monitors.nix")
         (mkSopsModule hostname)
         (mkSystemUsersModule hostname pkgs)
       ];
@@ -80,17 +79,17 @@
     };
 
   mkUsers = hostname: let
-    system = import (hostPath hostname "arch.nix");
+    system = import (hosts.hostPath hostname "arch.nix");
     pkgs = mkPkgs system;
     userLib = import ./mkUser.nix {inherit pkgs inputs;};
-    usernames = ls (hostPath hostname "users");
+    usernames = ls (hosts.hostPath hostname "users");
   in
     builtins.listToAttrs (
       map (username: {
         name = "${username}@${hostname}";
         value = userLib.mkHmUser {
-          inherit username;
-          userConfig = hostPath hostname "users/${username}/home.nix";
+          inherit username hostname;
+          userConfig = hosts.hostPath hostname "users/${username}/home.nix";
         };
       })
       usernames
