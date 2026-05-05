@@ -8,6 +8,10 @@
     };
     dw-proton.url = "github:imaviso/dwproton-flake";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    helium = {
+      url = "github:x13-me/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs";    
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -4,6 +4,7 @@
     ./dunst
     ./games
     ./git
+    ./helium
     ./hyprland
     ./kodi
     ./librewolf
