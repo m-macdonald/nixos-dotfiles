@@ -9,7 +9,7 @@
       zsh.enable = true;
       hyprland.enable = false;
       git.enable = true;
-      games.enable = true;
+      gaming.enable = true;
       rdp.client.enable = true;
       spotify.enable = true;
       tmux.enable = true;

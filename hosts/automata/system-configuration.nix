@@ -5,6 +5,7 @@
       amd.enable = true;
       hyprland.enable = true;
       bluetooth.enable = true;
+      steam.enable = true;
       sunshine.enable = true;
     };
 
