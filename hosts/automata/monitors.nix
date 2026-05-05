@@ -15,8 +15,8 @@
     {
       name = "DP-1";
       mode = {
-        height = 1504;
-        width = 2256;
+        height = 1440;
+        width = 2560;
         refreshRate = 170.071;
       };
       position = {
