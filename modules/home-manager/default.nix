@@ -2,8 +2,9 @@
   imports = [
     ./alacritty
     ./dunst
-    ./games
+    ./gaming
     ./git
+    ./helium
     ./hyprland
     ./kodi
     ./librewolf

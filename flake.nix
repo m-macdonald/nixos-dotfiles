@@ -2,12 +2,12 @@
   description = "My Nixos Configurations";
 
   inputs = {
-    chaotic = {
-      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     dw-proton.url = "github:imaviso/dwproton-flake";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    helium = {
+      url = "github:x13-me/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs";    
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,9 +30,6 @@
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    play-nix = {
-      url = "github:TophC7/play.nix/fea2ccf";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";

@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 with lib; let
@@ -18,30 +17,21 @@ in {
       opencl.enable = true;
     };
 
-    play = {
-      amd.enable = true;
-      steam = {
-        enable = true;
-        extraCompatPackages = with pkgs; [
-          proton-ge-bin
-          inputs.dw-proton.packages.${pkgs.stdenv.hostPlatform.system}.default
-        ];
-      };
-      gamemode.enable = true;
-      lutris.enable = true;
+    systemd = {
+      packages = with pkgs; [lact];
+      services.lactd.wantedBy = ["multi-user.target"];
+      tmpfiles.rules = let
+        rocmEnv = pkgs.symlinkJoin {
+          name = "rocm-combined";
+          paths = with pkgs.rocmPackages; [
+            rocblas
+            hipblas
+            clr
+          ];
+        };
+      in [
+        "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+      ];
     };
-
-    systemd.tmpfiles.rules = let
-      rocmEnv = pkgs.symlinkJoin {
-        name = "rocm-combined";
-        paths = with pkgs.rocmPackages; [
-          rocblas
-          hipblas
-          clr
-        ];
-      };
-    in [
-      "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
-    ];
   };
 }

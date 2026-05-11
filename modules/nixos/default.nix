@@ -13,6 +13,7 @@
     ./plasma-bigscreen
     ./podman
     ./rdp
+    ./steam
     ./sunshine
   ];
 }

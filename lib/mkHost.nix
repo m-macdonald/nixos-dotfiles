@@ -66,7 +66,6 @@
         "${self}/modules/nixos"
         "${self}/lib/monitors.nix"
         {nixpkgs.pkgs = pkgs;}
-        inputs.play-nix.nixosModules.play
         inputs.sops-nix.nixosModules.sops
         {networking.hostName = hostname;}
         (hosts.hostPath hostname "system-configuration.nix")

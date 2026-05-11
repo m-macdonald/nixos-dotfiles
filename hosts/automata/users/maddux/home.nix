@@ -3,14 +3,16 @@
   config = {
     modules = {
       alacritty.enable = true;
+      helium.enable = true;
       nvim.enable = true;
       niri.enable = true;
       noctalia.enable = true;
       zsh.enable = true;
       hyprland.enable = false;
       git.enable = true;
-      games.enable = true;
+      gaming.enable = true;
       rdp.client.enable = true;
+      spotify.enable = true;
       tmux.enable = true;
     };
   };

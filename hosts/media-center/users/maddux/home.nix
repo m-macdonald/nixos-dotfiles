@@ -4,6 +4,7 @@
     modules = {
       alacritty.enable = true;
       git.enable = true;
+      helium.enable = true;
       kodi.enable = true;
       mkv.enable = true;
       nvim.enable = true;
