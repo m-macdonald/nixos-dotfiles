@@ -37,15 +37,21 @@
         --nested-refresh ${toString primaryMonitor.mode.refreshRate} \
         --output-height ${toString primaryMonitor.mode.height} \
         --output-width ${toString primaryMonitor.mode.width} \
-        --rt
+        --rt \
         "$@"
   '';
 
+  heroic = pkgs.writeShellScriptBin "heroic-launcher" ''
+    exec ${lib.getExe pkgs.heroic} "$@"
+  '';
   heroic-gamescope = pkgs.writeShellScriptBin "heroic-gamescope" ''
-    exec ${gamescoperun}/bin/gamescoperun ${lib.getExe pkgs.heroic} "$@"
+    exec ${gamescoperun}/bin/gamescoperun ${heroic}/bin/heroic "$@"
+  '';
+  steam = pkgs.writeShellScriptBin "steam" ''
+     exec env STEAM_USE_WAYLAND=1 /run/current-system/sw/bin/steam "$@"
   '';
   steam-gamescope = pkgs.writeShellScriptBin "steam-gamescope" ''
-    exec ${gamescoperun}/bin/gamescoperun steam
+    exec ${gamescoperun}/bin/gamescoperun ${steam}/bin/steam
   '';
 in {
   options.modules.gaming.enable = lib.mkEnableOption "gaming";
@@ -65,14 +71,16 @@ in {
     home.packages = with pkgs; [
       gamescoperun
       pkgs.gamescope
-      pkgs.heroic
+      pkgs.lutris
       steam-gamescope
       heroic-gamescope
+      heroic
+      steam
       discord
       cockatrice
     ];
     xdg.desktopEntries = {
-      steamGamescope = lib.mkDefault {
+      steamGamescope = {
         name = "Steam (Gamescope)";
         exec = "${steam-gamescope}/bin/steam-gamescope";
         icon = "steam";
@@ -98,9 +106,9 @@ in {
         };
       };
 
-      steam = lib.mkDefault {
+      steam = {
         name = "Steam";
-        exec = "steam";
+        exec = "${steam}/bin/steam";
         icon = "steam";
         type = "Application";
         terminal = false;
@@ -118,7 +126,7 @@ in {
         };
       };
 
-      heroicGamescope = lib.mkDefault {
+      heroicGamescope = {
         name = "Heroic (Gamescope)";
         exec = "${heroic-gamescope}/bin/heroic-gamescope";
         icon = "com.heroicgameslauncher.hgl";
@@ -131,9 +139,9 @@ in {
           };
         };
       };
-      heroic = lib.mkDefault {
+      "com.heroicgameslauncher.hgl" = {
         name = "Heroic";
-        exec = lib.getExe pkgs.heroic;
+        exec = "${heroic}/bin/heroic-launcher";
         icon = "com.heroicgameslauncher.hgl";
         type = "Application";
         categories = ["Game"];

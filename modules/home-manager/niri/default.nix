@@ -5,12 +5,10 @@
   inputs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.modules.niri;
   monitorCfg = config.modules.host.monitors;
-in
-{
+in {
   options.modules.niri = {
     enable = mkEnableOption "niri";
   };
@@ -62,14 +60,15 @@ in
 
         # List of commands to run at startup.
         spawn-at-startup = [
+          {argv = ["systemctl" "--user" "import-environment" "NIXOS_OZONE_WL" "ELECTRON_OZONE_PLATFORM_HINT" "QT_QPA_PLATFORM"];}
           # Maybe move this into a systemd service eventually
-          { argv = [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ]; }
+          {argv = ["${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent"];}
           # TODO: If I ever feel the need to have multiple possible shells I'm going to need to make this dynamic
-          { argv = [ "noctalia-shell" ]; }
+          {command = ["noctalia-shell"];}
         ];
 
         workspaces = {
-          gaming = { };
+          gaming = {};
         };
 
         input = {
@@ -95,7 +94,8 @@ in
                 y = monitor.position.y;
               };
             };
-          }) monitorCfg
+          })
+          monitorCfg
         );
       };
     };
@@ -104,13 +104,20 @@ in
       xwayland-satellite
     ];
 
-    xdg.portal = {
-      enable = lib.mkForce true;
-
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
-      ];
+    xdg = {
+      configFile."xdg-desktop-portal/portals.conf".text = ''
+        [preferred]
+        default=gtk
+        org.freedesktop.impl.portal.FileChooser=gtk
+        org.freedesktop.impl.portal.Screencast=gnome
+        org.freedesktop.impl.portal.Secret=gnome-keyring
+      '';
+      portal = {
+        enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+        ];
+      };
     };
   };
 }
