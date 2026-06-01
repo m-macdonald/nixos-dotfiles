@@ -8,6 +8,7 @@
     ./hyprland
     ./kodi
     ./librewolf
+    ./localsend
     ./mkv
     ./niri
     ./noctalia
