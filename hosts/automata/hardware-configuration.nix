@@ -8,11 +8,20 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
-
+  nixpkgs.overlays = [
+    (final: prev: {
+      mesa = pkgs.unstable.mesa;
+      pkgsi686Linux =
+        prev.pkgsi686Linux
+        // {
+          mesa = pkgs.unstable.pkgsi686Linux.mesa;
+        };
+    })
+  ];
   boot = {
     # TODO: Check this periodically to see if nixos has moved linuxPackages_latest
     # to, or beyond, version 6.16. 6.16 is the first version to have the ntsync module that augments wine and proton performance.
-    kernelPackages = pkgs.linuxPackages_6_18;
+    kernelPackages = pkgs.unstable.linuxPackages_latest;
     kernelModules = ["kvm-amd" "ntsync"];
 
     initrd = {
@@ -26,16 +35,28 @@
         "sd_mod"
       ];
     };
+
+    kernelParams = [
+        "amdgpu.sg_display=0"
+        "amdgpu.gfxoff=0"
+    ];
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/NIXROOT";
-    fsType = "ext4";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/NIXROOT";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/NIXBOOT";
-    fsType = "vfat";
+    "/boot" = {
+      device = "/dev/disk/by-label/NIXBOOT";
+      fsType = "vfat";
+    };
+
+    "/mnt/data" = {
+      device = "/dev/disk/by-label/DATA";
+      fsType = "ext4";
+    };
   };
 
   swapDevices = [
