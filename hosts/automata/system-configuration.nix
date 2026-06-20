@@ -1,10 +1,10 @@
 {...}: {
   config = {
     modules = {
-      docker.enable = true;
       amd.enable = true;
-      hyprland.enable = true;
       bluetooth.enable = true;
+      docker.enable = true;
+      printing.enable = true;
       steam.enable = true;
       sunshine.enable = true;
     };
