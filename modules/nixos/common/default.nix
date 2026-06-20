@@ -10,6 +10,7 @@
     ./nix.nix
     ./shells.nix
     ./polkit-agent.nix
+    ./printing.nix
     ./vpn.nix
   ];
 
@@ -35,5 +36,11 @@
     pulse.enable = true;
     wireplumber.enable = true;
     jack.enable = true;
+  };
+
+  # Default LocalSend port
+  networking.firewall = {
+    allowedTCPPorts = [53317];
+    allowedUDPPorts = [53317];
   };
 }
