@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";    
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri = {
@@ -17,15 +17,15 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixvim = {
       url = "github:m-macdonald/nixvim-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = {
       url = "github:nix-community/NUR";

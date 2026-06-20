@@ -124,16 +124,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1777851538,
-        "narHash": "sha256-Gp8qwTEYNoy2yvmErVGlvLOQvrtEECCAKbonW7VJef8=",
+        "lastModified": 1781976894,
+        "narHash": "sha256-/9ZQMiT9bHWyRhus54nqySEMk3g+faU29VTmVXBCIck=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "cc09c0f9b7eaa95c2d9827338a5eb03d32505ca5",
+        "rev": "ad026da57b154db4794f7b7f54c6c966ad7f4e86",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "release-25.11",
+        "ref": "release-26.05",
         "repo": "home-manager",
         "type": "github"
       }
@@ -380,16 +380,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1778737229,
-        "narHash": "sha256-6xWoytx8jFW4PF1GjRm/i/53trbpKGfz6zjzQGBr4cI=",
+        "lastModified": 1781216227,
+        "narHash": "sha256-9mUW6gNwoN2SWc/l0fW4svPNOulXLl8ijqKyeSOGgJE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d7a713c0b7e47c908258e71cba7a2d77cc8d71d5",
+        "rev": "a0374025a863d007d98e3297f6aa46cc3141c2f0",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-25.11",
+        "ref": "nixos-26.05",
         "type": "indirect"
       }
     },
@@ -457,44 +457,20 @@
     "noctalia": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
-        ],
-        "noctalia-qs": "noctalia-qs"
-      },
-      "locked": {
-        "lastModified": 1777859147,
-        "narHash": "sha256-0vCgxdwrxBkHmqNgJtUMGCFwSV5a6AgYdKAgBCtFFPM=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia-shell",
-        "rev": "6b48834dd6c3913d211476ab2f964f3fb100675e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia-shell",
-        "type": "github"
-      }
-    },
-    "noctalia-qs": {
-      "inputs": {
-        "nixpkgs": [
-          "noctalia",
           "nixpkgs"
-        ],
-        "systems": "systems_3",
-        "treefmt-nix": "treefmt-nix"
+        ]
       },
       "locked": {
-        "lastModified": 1777773024,
-        "narHash": "sha256-pLU+KB84A0Jei/vTD6pOS4Ovkmq3QDfPQHg1MlKsRqM=",
+        "lastModified": 1781974776,
+        "narHash": "sha256-u9F6J9eim/rwgPqNLVOV32kTHFRXNhO1XTM4lriKLqs=",
         "owner": "noctalia-dev",
-        "repo": "noctalia-qs",
-        "rev": "d3e26ccd9eecde9139be00caf5dc2d4260fb31ee",
+        "repo": "noctalia",
+        "rev": "77e2a32edfbea9c23484d5608b6b8ecc657c2270",
         "type": "github"
       },
       "original": {
         "owner": "noctalia-dev",
-        "repo": "noctalia-qs",
+        "repo": "noctalia",
         "type": "github"
       }
     },
@@ -601,43 +577,6 @@
         "type": "github"
       }
     },
-    "systems_4": {
-      "locked": {
-        "lastModified": 1689347949,
-        "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
-        "owner": "nix-systems",
-        "repo": "default-linux",
-        "rev": "31732fcf5e8fea42e59c2488ad31a0e651500f68",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default-linux",
-        "type": "github"
-      }
-    },
-    "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "noctalia",
-          "noctalia-qs",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1775636079,
-        "narHash": "sha256-pc20NRoMdiar8oPQceQT47UUZMBTiMdUuWrYu2obUP0=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "790751ff7fd3801feeaf96d7dc416a8d581265ba",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
     "xdph": {
       "inputs": {
         "hyprland-protocols": "hyprland-protocols",
@@ -645,7 +584,7 @@
         "hyprutils": "hyprutils",
         "hyprwayland-scanner": "hyprwayland-scanner",
         "nixpkgs": "nixpkgs_3",
-        "systems": "systems_4"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1777585783,

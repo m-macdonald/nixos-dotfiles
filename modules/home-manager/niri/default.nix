@@ -25,11 +25,20 @@ in {
           "Mod+Shift+E".action = quit;
           "Mod+Return".action.spawn = "alacritty";
           "Mod+Space".action.spawn = [
-            "noctalia-shell"
-            "ipc"
-            "call"
+            "noctalia"
+            "msg"
+            "panel-toggle"
             "launcher"
-            "toggle"
+          ];
+          "Mod+P".action.spawn = [
+            "noctalia"
+            "msg"
+            "screenshot-fullscreen"
+          ];
+          "Mod+Shift+P".action.spawn = [
+            "noctalia"
+            "msg"
+            "screenshot-region"
           ];
           "Mod+Shift+C".action = close-window;
 
@@ -64,7 +73,7 @@ in {
           # Maybe move this into a systemd service eventually
           {argv = ["${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent"];}
           # TODO: If I ever feel the need to have multiple possible shells I'm going to need to make this dynamic
-          {command = ["noctalia-shell"];}
+          {command = ["noctalia"];}
         ];
 
         workspaces = {

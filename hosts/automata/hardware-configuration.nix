@@ -88,15 +88,6 @@
     };
   };
 
-  services.resolved = {
-    enable = true;
-    fallbackDns = ["1.1.1.1"];
-    extraConfig = ''
-      Cache=yes
-      ReadEtcHosts=yes
-    '';
-  };
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware = {
     enableRedistributableFirmware = lib.mkForce true;
