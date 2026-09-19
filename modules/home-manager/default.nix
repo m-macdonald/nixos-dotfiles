@@ -18,6 +18,7 @@
     ./dev
     ./rdp
     ./spotify
+    ./thunar
   ];
 
   home.packages = with pkgs; [

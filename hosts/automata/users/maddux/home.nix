@@ -12,6 +12,7 @@
       nvim.enable = true;
       rdp.client.enable = true;
       spotify.enable = true;
+      thunar.enable = true;
       tmux.enable = true;
       zsh.enable = true;
     };
