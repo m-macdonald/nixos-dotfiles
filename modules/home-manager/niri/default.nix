@@ -93,6 +93,7 @@ in {
             name = monitor.name;
             value = {
               enable = true;
+              scale = monitor.scale;
               mode = {
                 height = monitor.mode.height;
                 width = monitor.mode.width;
