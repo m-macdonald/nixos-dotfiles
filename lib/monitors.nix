@@ -11,6 +11,11 @@
             description = "name of the monitor";
             type = lib.types.str;
           };
+          scale = lib.mkOption {
+            description = "monitor scale";
+            type = lib.types.addCheck lib.types.float (x: x > 0);
+            default = 1.0;
+          };
           mode = lib.mkOption {
             type = lib.types.submodule {
               options = {
