@@ -6,11 +6,15 @@
 }: {
   fonts = {
     packages = with pkgs; [
-      nerd-fonts.droid-sans-mono
+      jetbrains-mono
+      nerd-fonts.symbols-only
     ];
 
     fontconfig = {
       hinting.autohint = true;
+      defaultFonts = {
+        monospace = ["JetBrains Mono" "Symbols Nerd Font Mono"];
+      };
     };
   };
 }
