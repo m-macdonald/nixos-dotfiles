@@ -17,10 +17,10 @@ in {
       };
       extraCompatPackages = with pkgs; [
         # X11 libraries
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
+        libxcursor
+        libxi
+        libxinerama
+        libxscrnsaver
 
         # System libraries
         stdenv.cc.cc.lib
