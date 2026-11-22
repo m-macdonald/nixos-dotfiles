@@ -59,17 +59,21 @@
             description = "Whether this is the primary monitor";
           };
         };
+        default = [];
+        description = "List of monitors attached to this host. Leave empty for headless hosts.";
       }
     );
   };
 
   config = {
     assertions = let
-      primaryMonitorCnt = lib.length (lib.filter (m: m.primary) config.modules.host.monitors);
+      monitors = config.modules.host.monitors;
+      monitorCnt = lib.length monitors;
+      primaryMonitorCnt = lib.length (lib.filter (m: m.primary) monitors);
     in [
       {
-        assertion = primaryMonitorCnt == 1;
-        message = "modules.host.monitors requires exactly one primary monitor, found ${toString primaryMonitorCnt}";
+        assertion = monitorCnt == 0 || primaryMonitorCnt == 1;
+        message = "modules.host.monitors requires exactly one primary monitor when at least one monitor is defined, found ${toString primaryMonitorCnt}";
       }
     ];
   };
