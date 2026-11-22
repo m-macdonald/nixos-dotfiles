@@ -6,12 +6,7 @@
 }:
 with lib; let
   cfg = config.modules.mkv;
-  libbluray = pkgs.libbluray.override {
-    withAACS = true;
-    withBDplus = true;
-    withJava = true;
-  };
-  vlc = pkgs.vlc.override {inherit libbluray;};
+  vlc = pkgs.vlc.override {libbluray-full = pkgs.libbluray-full;};
 in {
   options.modules.mkv = {
     enable = mkEnableOption "disk ripping";
